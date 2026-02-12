@@ -1,0 +1,389 @@
+"Notes"	"State"	"State Code"	"Year of Death"	"Year of Death Code"	"Hispanic Origin"	"Hispanic Origin Code"	Deaths	Births	Death Rate
+	"Alabama"	"01"	"1999"	"1999"	"Non-Hispanic White"	"6"	280	40190	6.97
+	"Alabama"	"01"	"1999"	"1999"	"Non-Hispanic Black"	"7"	306	19719	15.52
+	"Alabama"	"01"	"2000"	"2000"	"Non-Hispanic White"	"6"	268	40154	6.67
+	"Alabama"	"01"	"2000"	"2000"	"Non-Hispanic Black"	"7"	315	20498	15.37
+	"Alabama"	"01"	"2001"	"2001"	"Non-Hispanic White"	"6"	259	38342	6.75
+	"Alabama"	"01"	"2001"	"2001"	"Non-Hispanic Black"	"7"	283	19183	14.75
+	"Alabama"	"01"	"2002"	"2002"	"Non-Hispanic White"	"6"	259	37403	6.92
+	"Alabama"	"01"	"2002"	"2002"	"Non-Hispanic Black"	"7"	255	18276	13.95
+	"Alaska"	"02"	"1999"	"1999"	"Non-Hispanic White"	"6"	30	6066	4.95
+	"Alaska"	"02"	"2000"	"2000"	"Non-Hispanic White"	"6"	32	5770	5.55
+	"Alaska"	"02"	"2001"	"2001"	"Non-Hispanic White"	"6"	31	5567	5.57
+	"Alaska"	"02"	"2002"	"2002"	"Non-Hispanic White"	"6"	17	4427	3.84 (Unreliable)
+	"Arizona"	"04"	"1999"	"1999"	"Non-Hispanic White"	"6"	227	38853	5.84
+	"Arizona"	"04"	"1999"	"1999"	"Non-Hispanic Black"	"7"	42	2600	16.15
+	"Arizona"	"04"	"2000"	"2000"	"Non-Hispanic White"	"6"	266	39873	6.67
+	"Arizona"	"04"	"2000"	"2000"	"Non-Hispanic Black"	"7"	39	2602	14.99
+	"Arizona"	"04"	"2001"	"2001"	"Non-Hispanic White"	"6"	249	38878	6.40
+	"Arizona"	"04"	"2001"	"2001"	"Non-Hispanic Black"	"7"	47	2560	18.36
+	"Arizona"	"04"	"2002"	"2002"	"Non-Hispanic White"	"6"	253	39033	6.48
+	"Arizona"	"04"	"2002"	"2002"	"Non-Hispanic Black"	"7"	25	2545	9.82
+	"Arkansas"	"05"	"1999"	"1999"	"Non-Hispanic White"	"6"	195	26448	7.37
+	"Arkansas"	"05"	"1999"	"1999"	"Non-Hispanic Black"	"7"	87	7666	11.35
+	"Arkansas"	"05"	"2000"	"2000"	"Non-Hispanic White"	"6"	198	26657	7.43
+	"Arkansas"	"05"	"2000"	"2000"	"Non-Hispanic Black"	"7"	100	7950	12.58
+	"Arkansas"	"05"	"2001"	"2001"	"Non-Hispanic White"	"6"	198	26082	7.59
+	"Arkansas"	"05"	"2001"	"2001"	"Non-Hispanic Black"	"7"	95	7422	12.80
+	"Arkansas"	"05"	"2002"	"2002"	"Non-Hispanic White"	"6"	197	26001	7.58
+	"Arkansas"	"05"	"2002"	"2002"	"Non-Hispanic Black"	"7"	97	7415	13.08
+	"California"	"06"	"1999"	"1999"	"Non-Hispanic White"	"6"	804	172336	4.67
+	"California"	"06"	"1999"	"1999"	"Non-Hispanic Black"	"7"	418	34250	12.20
+	"California"	"06"	"2000"	"2000"	"Non-Hispanic White"	"6"	789	171552	4.60
+	"California"	"06"	"2000"	"2000"	"Non-Hispanic Black"	"7"	396	33839	11.70
+	"California"	"06"	"2001"	"2001"	"Non-Hispanic White"	"6"	795	167028	4.76
+	"California"	"06"	"2001"	"2001"	"Non-Hispanic Black"	"7"	352	32554	10.81
+	"California"	"06"	"2002"	"2002"	"Non-Hispanic White"	"6"	779	164650	4.73
+	"California"	"06"	"2002"	"2002"	"Non-Hispanic Black"	"7"	373	31454	11.86
+	"Colorado"	"08"	"1999"	"1999"	"Non-Hispanic White"	"6"	261	40705	6.41
+	"Colorado"	"08"	"1999"	"1999"	"Non-Hispanic Black"	"7"	34	2793	12.17
+	"Colorado"	"08"	"2000"	"2000"	"Non-Hispanic White"	"6"	230	41822	5.50
+	"Colorado"	"08"	"2000"	"2000"	"Non-Hispanic Black"	"7"	47	2902	16.20
+	"Colorado"	"08"	"2001"	"2001"	"Non-Hispanic White"	"6"	212	41764	5.08
+	"Colorado"	"08"	"2001"	"2001"	"Non-Hispanic Black"	"7"	27	2830	9.54
+	"Colorado"	"08"	"2002"	"2002"	"Non-Hispanic White"	"6"	208	41858	4.97
+	"Colorado"	"08"	"2002"	"2002"	"Non-Hispanic Black"	"7"	42	2761	15.21
+	"Connecticut"	"09"	"1999"	"1999"	"Non-Hispanic White"	"6"	128	28226	4.53
+	"Connecticut"	"09"	"1999"	"1999"	"Non-Hispanic Black"	"7"	52	4993	10.41
+	"Connecticut"	"09"	"2000"	"2000"	"Non-Hispanic White"	"6"	146	28785	5.07
+	"Connecticut"	"09"	"2000"	"2000"	"Non-Hispanic Black"	"7"	68	4946	13.75
+	"Connecticut"	"09"	"2001"	"2001"	"Non-Hispanic White"	"6"	126	28434	4.43
+	"Connecticut"	"09"	"2001"	"2001"	"Non-Hispanic Black"	"7"	77	4929	15.62
+	"Connecticut"	"09"	"2002"	"2002"	"Non-Hispanic White"	"6"	144	27685	5.20
+	"Connecticut"	"09"	"2002"	"2002"	"Non-Hispanic Black"	"7"	67	4932	13.58
+	"Delaware"	"10"	"1999"	"1999"	"Non-Hispanic White"	"6"	30	6863	4.37
+	"Delaware"	"10"	"1999"	"1999"	"Non-Hispanic Black"	"7"	43	2643	16.27
+	"Delaware"	"10"	"2000"	"2000"	"Non-Hispanic White"	"6"	53	6999	7.57
+	"Delaware"	"10"	"2000"	"2000"	"Non-Hispanic Black"	"7"	35	2606	13.43
+	"Delaware"	"10"	"2001"	"2001"	"Non-Hispanic White"	"6"	55	6598	8.34
+	"Delaware"	"10"	"2001"	"2001"	"Non-Hispanic Black"	"7"	51	2684	19.00
+	"Delaware"	"10"	"2002"	"2002"	"Non-Hispanic White"	"6"	51	6629	7.69
+	"Delaware"	"10"	"2002"	"2002"	"Non-Hispanic Black"	"7"	32	2684	11.92
+	"District of Columbia"	"11"	"1999"	"1999"	"Non-Hispanic White"	"6"	10	1411	7.09 (Unreliable)
+	"District of Columbia"	"11"	"1999"	"1999"	"Non-Hispanic Black"	"7"	100	5116	19.55
+	"District of Columbia"	"11"	"2000"	"2000"	"Non-Hispanic Black"	"7"	81	5108	15.86
+	"District of Columbia"	"11"	"2001"	"2001"	"Non-Hispanic Black"	"7"	73	4805	15.19
+	"District of Columbia"	"11"	"2002"	"2002"	"Non-Hispanic Black"	"7"	67	4563	14.68
+	"Florida"	"12"	"1999"	"1999"	"Non-Hispanic White"	"6"	625	106383	5.87
+	"Florida"	"12"	"1999"	"1999"	"Non-Hispanic Black"	"7"	573	44083	13.00
+	"Florida"	"12"	"2000"	"2000"	"Non-Hispanic White"	"6"	558	106201	5.25
+	"Florida"	"12"	"2000"	"2000"	"Non-Hispanic Black"	"7"	574	46233	12.42
+	"Florida"	"12"	"2001"	"2001"	"Non-Hispanic White"	"6"	597	104068	5.74
+	"Florida"	"12"	"2001"	"2001"	"Non-Hispanic Black"	"7"	602	45954	13.10
+	"Florida"	"12"	"2002"	"2002"	"Non-Hispanic White"	"6"	612	102294	5.98
+	"Florida"	"12"	"2002"	"2002"	"Non-Hispanic Black"	"7"	608	45257	13.43
+	"Georgia"	"13"	"1999"	"1999"	"Non-Hispanic White"	"6"	392	70016	5.60
+	"Georgia"	"13"	"1999"	"1999"	"Non-Hispanic Black"	"7"	569	41532	13.70
+	"Georgia"	"13"	"2000"	"2000"	"Non-Hispanic White"	"6"	421	70521	5.97
+	"Georgia"	"13"	"2000"	"2000"	"Non-Hispanic Black"	"7"	592	43418	13.63
+	"Georgia"	"13"	"2001"	"2001"	"Non-Hispanic White"	"6"	447	69306	6.45
+	"Georgia"	"13"	"2001"	"2001"	"Non-Hispanic Black"	"7"	564	43076	13.09
+	"Georgia"	"13"	"2002"	"2002"	"Non-Hispanic White"	"6"	450	68269	6.59
+	"Georgia"	"13"	"2002"	"2002"	"Non-Hispanic Black"	"7"	571	42001	13.59
+	"Hawaii"	"15"	"1999"	"1999"	"Non-Hispanic White"	"6"	20	3340	5.99
+	"Hawaii"	"15"	"2000"	"2000"	"Non-Hispanic White"	"6"	23	3285	7.00
+	"Hawaii"	"15"	"2001"	"2001"	"Non-Hispanic White"	"6"	19	3119	6.09 (Unreliable)
+	"Hawaii"	"15"	"2002"	"2002"	"Non-Hispanic White"	"6"	19	3200	5.94 (Unreliable)
+	"Idaho"	"16"	"1999"	"1999"	"Non-Hispanic White"	"6"	115	16810	6.84
+	"Idaho"	"16"	"2000"	"2000"	"Non-Hispanic White"	"6"	120	17021	7.05
+	"Idaho"	"16"	"2001"	"2001"	"Non-Hispanic White"	"6"	99	16855	5.87
+	"Idaho"	"16"	"2002"	"2002"	"Non-Hispanic White"	"6"	99	17074	5.80
+	"Illinois"	"17"	"1999"	"1999"	"Non-Hispanic White"	"6"	634	103430	6.13
+	"Illinois"	"17"	"1999"	"1999"	"Non-Hispanic Black"	"7"	605	34023	17.78
+	"Illinois"	"17"	"2000"	"2000"	"Non-Hispanic White"	"6"	636	103267	6.16
+	"Illinois"	"17"	"2000"	"2000"	"Non-Hispanic Black"	"7"	562	34080	16.49
+	"Illinois"	"17"	"2001"	"2001"	"Non-Hispanic White"	"6"	619	101660	6.09
+	"Illinois"	"17"	"2001"	"2001"	"Non-Hispanic Black"	"7"	495	32995	15.00
+	"Illinois"	"17"	"2002"	"2002"	"Non-Hispanic White"	"6"	553	99346	5.57
+	"Illinois"	"17"	"2002"	"2002"	"Non-Hispanic Black"	"7"	500	31604	15.82
+	"Indiana"	"18"	"1999"	"1999"	"Non-Hispanic White"	"6"	498	70896	7.02
+	"Indiana"	"18"	"1999"	"1999"	"Non-Hispanic Black"	"7"	150	9262	16.20
+	"Indiana"	"18"	"2000"	"2000"	"Non-Hispanic White"	"6"	502	71214	7.05
+	"Indiana"	"18"	"2000"	"2000"	"Non-Hispanic Black"	"7"	142	9447	15.03
+	"Indiana"	"18"	"2001"	"2001"	"Non-Hispanic White"	"6"	487	69242	7.03
+	"Indiana"	"18"	"2001"	"2001"	"Non-Hispanic Black"	"7"	117	9575	12.22
+	"Indiana"	"18"	"2002"	"2002"	"Non-Hispanic White"	"6"	468	67895	6.89
+	"Indiana"	"18"	"2002"	"2002"	"Non-Hispanic Black"	"7"	135	9271	14.56
+	"Iowa"	"19"	"1999"	"1999"	"Non-Hispanic White"	"6"	169	33261	5.08
+	"Iowa"	"19"	"1999"	"1999"	"Non-Hispanic Black"	"7"	25	1116	22.40
+	"Iowa"	"19"	"2000"	"2000"	"Non-Hispanic White"	"6"	202	33608	6.01
+	"Iowa"	"19"	"2000"	"2000"	"Non-Hispanic Black"	"7"	17	1203	14.13 (Unreliable)
+	"Iowa"	"19"	"2001"	"2001"	"Non-Hispanic White"	"6"	178	33069	5.38
+	"Iowa"	"19"	"2001"	"2001"	"Non-Hispanic Black"	"7"	14	1237	11.32 (Unreliable)
+	"Iowa"	"19"	"2002"	"2002"	"Non-Hispanic White"	"6"	169	32709	5.17
+	"Iowa"	"19"	"2002"	"2002"	"Non-Hispanic Black"	"7"	11	1243	8.85 (Unreliable)
+	"Kansas"	"20"	"1999"	"1999"	"Non-Hispanic White"	"6"	217	30030	7.23
+	"Kansas"	"20"	"1999"	"1999"	"Non-Hispanic Black"	"7"	36	2823	12.75
+	"Kansas"	"20"	"2000"	"2000"	"Non-Hispanic White"	"6"	199	30181	6.59
+	"Kansas"	"20"	"2000"	"2000"	"Non-Hispanic Black"	"7"	29	2820	10.28
+	"Kansas"	"20"	"2001"	"2001"	"Non-Hispanic White"	"6"	184	29363	6.27
+	"Kansas"	"20"	"2001"	"2001"	"Non-Hispanic Black"	"7"	53	2747	19.29
+	"Kansas"	"20"	"2002"	"2002"	"Non-Hispanic White"	"6"	190	29563	6.43
+	"Kansas"	"20"	"2002"	"2002"	"Non-Hispanic Black"	"7"	41	2846	14.41
+	"Kentucky"	"21"	"1999"	"1999"	"Non-Hispanic White"	"6"	338	47837	7.07
+	"Kentucky"	"21"	"1999"	"1999"	"Non-Hispanic Black"	"7"	60	4948	12.13
+	"Kentucky"	"21"	"2000"	"2000"	"Non-Hispanic White"	"6"	326	49134	6.63
+	"Kentucky"	"21"	"2000"	"2000"	"Non-Hispanic Black"	"7"	58	5107	11.36
+	"Kentucky"	"21"	"2001"	"2001"	"Non-Hispanic White"	"6"	277	47486	5.83
+	"Kentucky"	"21"	"2001"	"2001"	"Non-Hispanic Black"	"7"	38	4905	7.75
+	"Kentucky"	"21"	"2002"	"2002"	"Non-Hispanic White"	"6"	310	46812	6.62
+	"Kentucky"	"21"	"2002"	"2002"	"Non-Hispanic Black"	"7"	64	4923	13.00
+	"Louisiana"	"22"	"1999"	"1999"	"Non-Hispanic White"	"6"	224	36936	6.06
+	"Louisiana"	"22"	"1999"	"1999"	"Non-Hispanic Black"	"7"	383	27036	14.17
+	"Louisiana"	"22"	"2000"	"2000"	"Non-Hispanic White"	"6"	229	36593	6.26
+	"Louisiana"	"22"	"2000"	"2000"	"Non-Hispanic Black"	"7"	365	28303	12.90
+	"Louisiana"	"22"	"2001"	"2001"	"Non-Hispanic White"	"6"	250	35381	7.07
+	"Louisiana"	"22"	"2001"	"2001"	"Non-Hispanic Black"	"7"	378	27013	13.99
+	"Louisiana"	"22"	"2002"	"2002"	"Non-Hispanic White"	"6"	262	35428	7.40
+	"Louisiana"	"22"	"2002"	"2002"	"Non-Hispanic Black"	"7"	380	26616	14.28
+	"Maine"	"23"	"1999"	"1999"	"Non-Hispanic White"	"6"	62	12449	4.98
+	"Maine"	"23"	"2000"	"2000"	"Non-Hispanic White"	"6"	63	13019	4.84
+	"Maine"	"23"	"2001"	"2001"	"Non-Hispanic White"	"6"	78	13074	5.97
+	"Maine"	"23"	"2002"	"2002"	"Non-Hispanic White"	"6"	55	12852	4.28
+	"Maryland"	"24"	"1999"	"1999"	"Non-Hispanic White"	"6"	206	40400	5.10
+	"Maryland"	"24"	"1999"	"1999"	"Non-Hispanic Black"	"7"	355	24048	14.76
+	"Maryland"	"24"	"2000"	"2000"	"Non-Hispanic White"	"6"	192	41013	4.68
+	"Maryland"	"24"	"2000"	"2000"	"Non-Hispanic Black"	"7"	321	24678	13.01
+	"Maryland"	"24"	"2001"	"2001"	"Non-Hispanic White"	"6"	217	39798	5.45
+	"Maryland"	"24"	"2001"	"2001"	"Non-Hispanic Black"	"7"	315	24046	13.10
+	"Maryland"	"24"	"2002"	"2002"	"Non-Hispanic White"	"6"	222	39093	5.68
+	"Maryland"	"24"	"2002"	"2002"	"Non-Hispanic Black"	"7"	286	24007	11.91
+	"Massachusetts"	"25"	"1999"	"1999"	"Non-Hispanic White"	"6"	264	60744	4.35
+	"Massachusetts"	"25"	"1999"	"1999"	"Non-Hispanic Black"	"7"	77	6548	11.76
+	"Massachusetts"	"25"	"2000"	"2000"	"Non-Hispanic White"	"6"	229	60419	3.79
+	"Massachusetts"	"25"	"2000"	"2000"	"Non-Hispanic Black"	"7"	73	6436	11.34
+	"Massachusetts"	"25"	"2001"	"2001"	"Non-Hispanic White"	"6"	245	59407	4.12
+	"Massachusetts"	"25"	"2001"	"2001"	"Non-Hispanic Black"	"7"	67	6552	10.23
+	"Massachusetts"	"25"	"2002"	"2002"	"Non-Hispanic White"	"6"	231	58313	3.96
+	"Massachusetts"	"25"	"2002"	"2002"	"Non-Hispanic Black"	"7"	65	6635	9.80
+	"Michigan"	"26"	"1999"	"1999"	"Non-Hispanic White"	"6"	516	91860	5.62
+	"Michigan"	"26"	"1999"	"1999"	"Non-Hispanic Black"	"7"	403	23692	17.01
+	"Michigan"	"26"	"2000"	"2000"	"Non-Hispanic White"	"6"	551	92552	5.95
+	"Michigan"	"26"	"2000"	"2000"	"Non-Hispanic Black"	"7"	403	23872	16.88
+	"Michigan"	"26"	"2001"	"2001"	"Non-Hispanic White"	"6"	594	96347	6.17
+	"Michigan"	"26"	"2001"	"2001"	"Non-Hispanic Black"	"7"	378	23400	16.15
+	"Michigan"	"26"	"2002"	"2002"	"Non-Hispanic White"	"6"	563	93831	6.00
+	"Michigan"	"26"	"2002"	"2002"	"Non-Hispanic Black"	"7"	390	22217	17.55
+	"Minnesota"	"27"	"1999"	"1999"	"Non-Hispanic White"	"6"	281	50952	5.51
+	"Minnesota"	"27"	"1999"	"1999"	"Non-Hispanic Black"	"7"	49	3921	12.50
+	"Minnesota"	"27"	"2000"	"2000"	"Non-Hispanic White"	"6"	249	52098	4.78
+	"Minnesota"	"27"	"2000"	"2000"	"Non-Hispanic Black"	"7"	62	4378	14.16
+	"Minnesota"	"27"	"2001"	"2001"	"Non-Hispanic White"	"6"	245	53141	4.61
+	"Minnesota"	"27"	"2001"	"2001"	"Non-Hispanic Black"	"7"	37	4685	7.90
+	"Minnesota"	"27"	"2002"	"2002"	"Non-Hispanic White"	"6"	251	52744	4.76
+	"Minnesota"	"27"	"2002"	"2002"	"Non-Hispanic Black"	"7"	50	4750	10.53
+	"Mississippi"	"28"	"1999"	"1999"	"Non-Hispanic White"	"6"	147	22171	6.63
+	"Mississippi"	"28"	"1999"	"1999"	"Non-Hispanic Black"	"7"	276	19398	14.23
+	"Mississippi"	"28"	"2000"	"2000"	"Non-Hispanic White"	"6"	159	22879	6.95
+	"Mississippi"	"28"	"2000"	"2000"	"Non-Hispanic Black"	"7"	300	19889	15.08
+	"Mississippi"	"28"	"2001"	"2001"	"Non-Hispanic White"	"6"	157	22073	7.11
+	"Mississippi"	"28"	"2001"	"2001"	"Non-Hispanic Black"	"7"	275	18809	14.62
+	"Mississippi"	"28"	"2002"	"2002"	"Non-Hispanic White"	"6"	150	21749	6.90
+	"Mississippi"	"28"	"2002"	"2002"	"Non-Hispanic Black"	"7"	263	18191	14.46
+	"Missouri"	"29"	"1999"	"1999"	"Non-Hispanic White"	"6"	357	60350	5.92
+	"Missouri"	"29"	"1999"	"1999"	"Non-Hispanic Black"	"7"	199	11231	17.72
+	"Missouri"	"29"	"2000"	"2000"	"Non-Hispanic White"	"6"	366	60502	6.05
+	"Missouri"	"29"	"2000"	"2000"	"Non-Hispanic Black"	"7"	160	11437	13.99
+	"Missouri"	"29"	"2001"	"2001"	"Non-Hispanic White"	"6"	349	59514	5.86
+	"Missouri"	"29"	"2001"	"2001"	"Non-Hispanic Black"	"7"	181	11087	16.33
+	"Missouri"	"29"	"2002"	"2002"	"Non-Hispanic White"	"6"	409	59079	6.92
+	"Missouri"	"29"	"2002"	"2002"	"Non-Hispanic Black"	"7"	183	10983	16.66
+	"Montana"	"30"	"1999"	"1999"	"Non-Hispanic White"	"6"	50	8954	5.58
+	"Montana"	"30"	"2000"	"2000"	"Non-Hispanic White"	"6"	46	8835	5.21
+	"Montana"	"30"	"2001"	"2001"	"Non-Hispanic White"	"6"	60	8798	6.82
+	"Montana"	"30"	"2002"	"2002"	"Non-Hispanic White"	"6"	64	8967	7.14
+	"Nebraska"	"31"	"1999"	"1999"	"Non-Hispanic White"	"6"	107	18851	5.68
+	"Nebraska"	"31"	"1999"	"1999"	"Non-Hispanic Black"	"7"	18	1257	14.32 (Unreliable)
+	"Nebraska"	"31"	"2000"	"2000"	"Non-Hispanic White"	"6"	125	19200	6.51
+	"Nebraska"	"31"	"2000"	"2000"	"Non-Hispanic Black"	"7"	20	1355	14.76
+	"Nebraska"	"31"	"2001"	"2001"	"Non-Hispanic White"	"6"	119	19056	6.24
+	"Nebraska"	"31"	"2001"	"2001"	"Non-Hispanic Black"	"7"	14	1355	10.33 (Unreliable)
+	"Nebraska"	"31"	"2002"	"2002"	"Non-Hispanic White"	"6"	111	19121	5.81
+	"Nebraska"	"31"	"2002"	"2002"	"Non-Hispanic Black"	"7"	28	1416	19.77
+	"Nevada"	"32"	"1999"	"1999"	"Non-Hispanic White"	"6"	96	15575	6.16
+	"Nevada"	"32"	"1999"	"1999"	"Non-Hispanic Black"	"7"	20	2117	9.45
+	"Nevada"	"32"	"2000"	"2000"	"Non-Hispanic White"	"6"	78	15724	4.96
+	"Nevada"	"32"	"2000"	"2000"	"Non-Hispanic Black"	"7"	27	2283	11.83
+	"Nevada"	"32"	"2001"	"2001"	"Non-Hispanic White"	"6"	70	15323	4.57
+	"Nevada"	"32"	"2001"	"2001"	"Non-Hispanic Black"	"7"	33	2414	13.67
+	"Nevada"	"32"	"2002"	"2002"	"Non-Hispanic White"	"6"	91	15638	5.82
+	"Nevada"	"32"	"2002"	"2002"	"Non-Hispanic Black"	"7"	38	2534	15.00
+	"New Hampshire"	"33"	"1999"	"1999"	"Non-Hispanic White"	"6"	64	12753	5.02
+	"New Hampshire"	"33"	"2000"	"2000"	"Non-Hispanic White"	"6"	66	13135	5.02
+	"New Hampshire"	"33"	"2001"	"2001"	"Non-Hispanic White"	"6"	46	12849	3.58
+	"New Hampshire"	"33"	"2002"	"2002"	"Non-Hispanic White"	"6"	62	12690	4.89
+	"New Jersey"	"34"	"1999"	"1999"	"Non-Hispanic White"	"6"	297	64762	4.59
+	"New Jersey"	"34"	"1999"	"1999"	"Non-Hispanic Black"	"7"	275	19151	14.36
+	"New Jersey"	"34"	"2000"	"2000"	"Non-Hispanic White"	"6"	270	64098	4.21
+	"New Jersey"	"34"	"2000"	"2000"	"Non-Hispanic Black"	"7"	263	19078	13.79
+	"New Jersey"	"34"	"2001"	"2001"	"Non-Hispanic White"	"6"	270	63266	4.27
+	"New Jersey"	"34"	"2001"	"2001"	"Non-Hispanic Black"	"7"	262	18710	14.00
+	"New Jersey"	"34"	"2002"	"2002"	"Non-Hispanic White"	"6"	225	61741	3.64
+	"New Jersey"	"34"	"2002"	"2002"	"Non-Hispanic Black"	"7"	233	18010	12.94
+	"New Mexico"	"35"	"1999"	"1999"	"Non-Hispanic White"	"6"	70	9168	7.64
+	"New Mexico"	"35"	"2000"	"2000"	"Non-Hispanic White"	"6"	56	9056	6.18
+	"New Mexico"	"35"	"2000"	"2000"	"Non-Hispanic Black"	"7"	10	477	20.96 (Unreliable)
+	"New Mexico"	"35"	"2001"	"2001"	"Non-Hispanic White"	"6"	59	8777	6.72
+	"New Mexico"	"35"	"2002"	"2002"	"Non-Hispanic White"	"6"	45	8759	5.14
+	"New York"	"36"	"1999"	"1999"	"Non-Hispanic White"	"6"	585	124484	4.70
+	"New York"	"36"	"1999"	"1999"	"Non-Hispanic Black"	"7"	543	47512	11.43
+	"New York"	"36"	"2000"	"2000"	"Non-Hispanic White"	"6"	622	125365	4.96
+	"New York"	"36"	"2000"	"2000"	"Non-Hispanic Black"	"7"	581	47869	12.14
+	"New York"	"36"	"2001"	"2001"	"Non-Hispanic White"	"6"	606	130637	4.64
+	"New York"	"36"	"2001"	"2001"	"Non-Hispanic Black"	"7"	490	46709	10.49
+	"New York"	"36"	"2002"	"2002"	"Non-Hispanic White"	"6"	628	130189	4.82
+	"New York"	"36"	"2002"	"2002"	"Non-Hispanic Black"	"7"	499	45206	11.04
+	"North Carolina"	"37"	"1999"	"1999"	"Non-Hispanic White"	"6"	493	71496	6.90
+	"North Carolina"	"37"	"1999"	"1999"	"Non-Hispanic Black"	"7"	428	28286	15.13
+	"North Carolina"	"37"	"2000"	"2000"	"Non-Hispanic White"	"6"	486	73966	6.57
+	"North Carolina"	"37"	"2000"	"2000"	"Non-Hispanic Black"	"7"	437	29229	14.95
+	"North Carolina"	"37"	"2001"	"2001"	"Non-Hispanic White"	"6"	465	70863	6.56
+	"North Carolina"	"37"	"2001"	"2001"	"Non-Hispanic Black"	"7"	432	28250	15.29
+	"North Carolina"	"37"	"2002"	"2002"	"Non-Hispanic White"	"6"	421	70234	5.99
+	"North Carolina"	"37"	"2002"	"2002"	"Non-Hispanic Black"	"7"	410	27434	14.94
+	"North Dakota"	"38"	"1999"	"1999"	"Non-Hispanic White"	"6"	39	6463	6.03
+	"North Dakota"	"38"	"2000"	"2000"	"Non-Hispanic White"	"6"	43	6395	6.72
+	"North Dakota"	"38"	"2001"	"2001"	"Non-Hispanic White"	"6"	52	6299	8.26
+	"North Dakota"	"38"	"2002"	"2002"	"Non-Hispanic White"	"6"	35	6499	5.39
+	"Ohio"	"39"	"1999"	"1999"	"Non-Hispanic White"	"6"	856	124221	6.89
+	"Ohio"	"39"	"1999"	"1999"	"Non-Hispanic Black"	"7"	331	21572	15.34
+	"Ohio"	"39"	"2000"	"2000"	"Non-Hispanic White"	"6"	801	124384	6.44
+	"Ohio"	"39"	"2000"	"2000"	"Non-Hispanic Black"	"7"	337	23500	14.34
+	"Ohio"	"39"	"2001"	"2001"	"Non-Hispanic White"	"6"	763	120885	6.31
+	"Ohio"	"39"	"2001"	"2001"	"Non-Hispanic Black"	"7"	345	22777	15.15
+	"Ohio"	"39"	"2002"	"2002"	"Non-Hispanic White"	"6"	739	117998	6.26
+	"Ohio"	"39"	"2002"	"2002"	"Non-Hispanic Black"	"7"	366	22364	16.37
+	"Oklahoma"	"40"	"1999"	"1999"	"Non-Hispanic White"	"6"	282	34159	8.26
+	"Oklahoma"	"40"	"1999"	"1999"	"Non-Hispanic Black"	"7"	64	4466	14.33
+	"Oklahoma"	"40"	"2000"	"2000"	"Non-Hispanic White"	"6"	270	34121	7.91
+	"Oklahoma"	"40"	"2000"	"2000"	"Non-Hispanic Black"	"7"	62	4702	13.19
+	"Oklahoma"	"40"	"2001"	"2001"	"Non-Hispanic White"	"6"	227	34360	6.61
+	"Oklahoma"	"40"	"2001"	"2001"	"Non-Hispanic Black"	"7"	70	4574	15.30
+	"Oklahoma"	"40"	"2002"	"2002"	"Non-Hispanic White"	"6"	261	34367	7.59
+	"Oklahoma"	"40"	"2002"	"2002"	"Non-Hispanic Black"	"7"	70	4676	14.97
+	"Oregon"	"41"	"1999"	"1999"	"Non-Hispanic White"	"6"	182	34247	5.31
+	"Oregon"	"41"	"2000"	"2000"	"Non-Hispanic White"	"6"	182	34291	5.31
+	"Oregon"	"41"	"2000"	"2000"	"Non-Hispanic Black"	"7"	10	996	10.04 (Unreliable)
+	"Oregon"	"41"	"2001"	"2001"	"Non-Hispanic White"	"6"	184	33388	5.51
+	"Oregon"	"41"	"2002"	"2002"	"Non-Hispanic White"	"6"	198	32949	6.01
+	"Oregon"	"41"	"2002"	"2002"	"Non-Hispanic Black"	"7"	12	897	13.38 (Unreliable)
+	"Pennsylvania"	"42"	"1999"	"1999"	"Non-Hispanic White"	"6"	645	113655	5.68
+	"Pennsylvania"	"42"	"1999"	"1999"	"Non-Hispanic Black"	"7"	327	20000	16.35
+	"Pennsylvania"	"42"	"2000"	"2000"	"Non-Hispanic White"	"6"	634	113557	5.58
+	"Pennsylvania"	"42"	"2000"	"2000"	"Non-Hispanic Black"	"7"	303	20227	14.98
+	"Pennsylvania"	"42"	"2001"	"2001"	"Non-Hispanic White"	"6"	645	110503	5.84
+	"Pennsylvania"	"42"	"2001"	"2001"	"Non-Hispanic Black"	"7"	268	19615	13.66
+	"Pennsylvania"	"42"	"2002"	"2002"	"Non-Hispanic White"	"6"	679	108622	6.25
+	"Pennsylvania"	"42"	"2002"	"2002"	"Non-Hispanic Black"	"7"	287	19738	14.54
+	"Rhode Island"	"44"	"1999"	"1999"	"Non-Hispanic White"	"6"	27	7362	3.67
+	"Rhode Island"	"44"	"1999"	"1999"	"Non-Hispanic Black"	"7"	13	856	15.19 (Unreliable)
+	"Rhode Island"	"44"	"2000"	"2000"	"Non-Hispanic White"	"6"	42	7825	5.37
+	"Rhode Island"	"44"	"2000"	"2000"	"Non-Hispanic Black"	"7"	12	1005	11.94 (Unreliable)
+	"Rhode Island"	"44"	"2001"	"2001"	"Non-Hispanic White"	"6"	36	7676	4.69
+	"Rhode Island"	"44"	"2001"	"2001"	"Non-Hispanic Black"	"7"	12	994	12.07 (Unreliable)
+	"Rhode Island"	"44"	"2002"	"2002"	"Non-Hispanic White"	"6"	44	7356	5.98
+	"Rhode Island"	"44"	"2002"	"2002"	"Non-Hispanic Black"	"7"	14	1027	13.63 (Unreliable)
+	"South Carolina"	"45"	"1999"	"1999"	"Non-Hispanic White"	"6"	234	33315	7.02
+	"South Carolina"	"45"	"1999"	"1999"	"Non-Hispanic Black"	"7"	311	19030	16.34
+	"South Carolina"	"45"	"2000"	"2000"	"Non-Hispanic White"	"6"	191	33175	5.76
+	"South Carolina"	"45"	"2000"	"2000"	"Non-Hispanic Black"	"7"	287	19709	14.56
+	"South Carolina"	"45"	"2001"	"2001"	"Non-Hispanic White"	"6"	204	32932	6.19
+	"South Carolina"	"45"	"2001"	"2001"	"Non-Hispanic Black"	"7"	279	18878	14.78
+	"South Carolina"	"45"	"2002"	"2002"	"Non-Hispanic White"	"6"	197	32203	6.12
+	"South Carolina"	"45"	"2002"	"2002"	"Non-Hispanic Black"	"7"	282	18143	15.54
+	"South Dakota"	"46"	"1999"	"1999"	"Non-Hispanic White"	"6"	65	8505	7.64
+	"South Dakota"	"46"	"2000"	"2000"	"Non-Hispanic White"	"6"	36	8224	4.38
+	"South Dakota"	"46"	"2001"	"2001"	"Non-Hispanic White"	"6"	53	8254	6.42
+	"South Dakota"	"46"	"2002"	"2002"	"Non-Hispanic White"	"6"	45	8376	5.37
+	"Tennessee"	"47"	"1999"	"1999"	"Non-Hispanic White"	"6"	338	57589	5.87
+	"Tennessee"	"47"	"1999"	"1999"	"Non-Hispanic Black"	"7"	240	16471	14.57
+	"Tennessee"	"47"	"2000"	"2000"	"Non-Hispanic White"	"6"	405	58028	6.98
+	"Tennessee"	"47"	"2000"	"2000"	"Non-Hispanic Black"	"7"	299	16876	17.72
+	"Tennessee"	"47"	"2001"	"2001"	"Non-Hispanic White"	"6"	381	56363	6.76
+	"Tennessee"	"47"	"2001"	"2001"	"Non-Hispanic Black"	"7"	260	16568	15.69
+	"Tennessee"	"47"	"2002"	"2002"	"Non-Hispanic White"	"6"	404	55316	7.30
+	"Tennessee"	"47"	"2002"	"2002"	"Non-Hispanic Black"	"7"	285	16267	17.52
+	"Texas"	"48"	"1999"	"1999"	"Non-Hispanic White"	"6"	762	139861	5.45
+	"Texas"	"48"	"1999"	"1999"	"Non-Hispanic Black"	"7"	473	39515	11.97
+	"Texas"	"48"	"2000"	"2000"	"Non-Hispanic White"	"6"	742	142143	5.22
+	"Texas"	"48"	"2000"	"2000"	"Non-Hispanic Black"	"7"	408	40657	10.04
+	"Texas"	"48"	"2001"	"2001"	"Non-Hispanic White"	"6"	758	139104	5.45
+	"Texas"	"48"	"2001"	"2001"	"Non-Hispanic Black"	"7"	435	40224	10.81
+	"Texas"	"48"	"2002"	"2002"	"Non-Hispanic White"	"6"	797	137618	5.79
+	"Texas"	"48"	"2002"	"2002"	"Non-Hispanic Black"	"7"	509	41008	12.41
+	"Utah"	"49"	"1999"	"1999"	"Non-Hispanic White"	"6"	187	38551	4.85
+	"Utah"	"49"	"2000"	"2000"	"Non-Hispanic White"	"6"	198	38809	5.10
+	"Utah"	"49"	"2001"	"2001"	"Non-Hispanic White"	"6"	176	38683	4.55
+	"Utah"	"49"	"2002"	"2002"	"Non-Hispanic White"	"6"	206	39533	5.21
+	"Vermont"	"50"	"1999"	"1999"	"Non-Hispanic White"	"6"	33	6297	5.24
+	"Vermont"	"50"	"2000"	"2000"	"Non-Hispanic White"	"6"	39	6173	6.32
+	"Vermont"	"50"	"2001"	"2001"	"Non-Hispanic White"	"6"	34	6014	5.65
+	"Vermont"	"50"	"2002"	"2002"	"Non-Hispanic White"	"6"	28	6131	4.57
+	"Virginia"	"51"	"1999"	"1999"	"Non-Hispanic White"	"6"	348	62054	5.61
+	"Virginia"	"51"	"1999"	"1999"	"Non-Hispanic Black"	"7"	273	22034	12.39
+	"Virginia"	"51"	"2000"	"2000"	"Non-Hispanic White"	"6"	350	63528	5.51
+	"Virginia"	"51"	"2000"	"2000"	"Non-Hispanic Black"	"7"	262	22369	11.71
+	"Virginia"	"51"	"2001"	"2001"	"Non-Hispanic White"	"6"	337	61871	5.45
+	"Virginia"	"51"	"2001"	"2001"	"Non-Hispanic Black"	"7"	329	22082	14.90
+	"Virginia"	"51"	"2002"	"2002"	"Non-Hispanic White"	"6"	342	61694	5.54
+	"Virginia"	"51"	"2002"	"2002"	"Non-Hispanic Black"	"7"	315	21920	14.37
+	"Washington"	"53"	"1999"	"1999"	"Non-Hispanic White"	"6"	238	55433	4.29
+	"Washington"	"53"	"1999"	"1999"	"Non-Hispanic Black"	"7"	38	3043	12.49
+	"Washington"	"53"	"2000"	"2000"	"Non-Hispanic White"	"6"	269	55774	4.82
+	"Washington"	"53"	"2000"	"2000"	"Non-Hispanic Black"	"7"	25	3307	7.56
+	"Washington"	"53"	"2001"	"2001"	"Non-Hispanic White"	"6"	308	54469	5.65
+	"Washington"	"53"	"2001"	"2001"	"Non-Hispanic Black"	"7"	35	3220	10.87
+	"Washington"	"53"	"2002"	"2002"	"Non-Hispanic White"	"6"	273	53388	5.11
+	"Washington"	"53"	"2002"	"2002"	"Non-Hispanic Black"	"7"	33	3263	10.11
+	"West Virginia"	"54"	"1999"	"1999"	"Non-Hispanic White"	"6"	145	19679	7.37
+	"West Virginia"	"54"	"2000"	"2000"	"Non-Hispanic White"	"6"	145	19867	7.30
+	"West Virginia"	"54"	"2001"	"2001"	"Non-Hispanic White"	"6"	142	19446	7.30
+	"West Virginia"	"54"	"2002"	"2002"	"Non-Hispanic White"	"6"	169	19749	8.56
+	"West Virginia"	"54"	"2002"	"2002"	"Non-Hispanic Black"	"7"	11	677	16.25 (Unreliable)
+	"Wisconsin"	"55"	"1999"	"1999"	"Non-Hispanic White"	"6"	312	54828	5.69
+	"Wisconsin"	"55"	"1999"	"1999"	"Non-Hispanic Black"	"7"	97	6446	15.05
+	"Wisconsin"	"55"	"2000"	"2000"	"Non-Hispanic White"	"6"	317	55418	5.72
+	"Wisconsin"	"55"	"2000"	"2000"	"Non-Hispanic Black"	"7"	107	6442	16.61
+	"Wisconsin"	"55"	"2001"	"2001"	"Non-Hispanic White"	"6"	307	54346	5.65
+	"Wisconsin"	"55"	"2001"	"2001"	"Non-Hispanic Black"	"7"	122	6515	18.73
+	"Wisconsin"	"55"	"2002"	"2002"	"Non-Hispanic White"	"6"	294	53820	5.46
+	"Wisconsin"	"55"	"2002"	"2002"	"Non-Hispanic Black"	"7"	116	6349	18.27
+	"Wyoming"	"56"	"1999"	"1999"	"Non-Hispanic White"	"6"	36	5225	6.89
+	"Wyoming"	"56"	"2000"	"2000"	"Non-Hispanic White"	"6"	36	5309	6.78
+	"Wyoming"	"56"	"2001"	"2001"	"Non-Hispanic White"	"6"	28	5161	5.43
+	"Wyoming"	"56"	"2002"	"2002"	"Non-Hispanic White"	"6"	37	5540	6.68
+"---"
+"Dataset: Linked Birth / Infant Death Records, 1999-2002"
+"Query Parameters:"
+"Hispanic Origin: Non-Hispanic White; Non-Hispanic Black"
+"Group By: State; Year of Death; Hispanic Origin"
+"Show Totals: Disabled"
+"Show Zero Values: False"
+"Show Suppressed: False"
+"Calculate Rates Per: 1,000"
+"---"
+"Help: See http://wonder.cdc.gov/wonder/help/lbd.html for more information."
+"---"
+"Query Date: May 15, 2024 7:45:59 PM"
+"---"
+"Suggested Citation: Centers for Disease Control and Prevention, National Center for Health Statistics. National Vital Statistics"
+"System, Linked Birth / Infant Deaths on CDC WONDER Online Database. Data are from the Linked Birth / Infant Deaths Records"
+"1999-2002, as compiled from data provided by the 57 vital statistics jurisdictions through the Vital Statistics Cooperative"
+"Program. Accessed at http://wonder.cdc.gov/lbd-v2002.html on May 15, 2024 7:45:59 PM"
+"---"
+Messages:
+"1. Totals are not available for these results due to suppression constraints. More Information:"
+"http://wonder.cdc.gov/wonder/help/faq.html#Privacy."
+"2. Rows with zero Deaths are hidden. Use Quick Options above to show zero rows."
+"3. Rows with suppressed Deaths are hidden. Use Quick Options above to show suppressed rows."
+"---"
+Caveats:
+"1. Infant deaths are weighted so numbers may not exactly add to totals due to rounding. More information:"
+"http://wonder.cdc.gov/wonder/help/lbd.html#WeightFactors-Totals."
+"2. 'Suppressed' appears instead of death, birth, and rate values when the death value represents 0-9 sub-national events. This"
+"is because the data do not meet the criteria for confidentiality constraints. More information:"
+"http://wonder.cdc.gov/wonder/help/lbd.html#Assurance of Confidentiality."
+"3. 'Unreliable' appears for rates when there are fewer than 20 deaths in the numerator. This is because the figure does not meet"
+"the NCHS standard of reliability or precision. More information: http://wonder.cdc.gov/wonder/help/lbd.html#Unreliable."
+"4. Note that there may be slight differences in the number of infant deaths when comparing the Linked Birth / Death Records to"
+"the other vital statistics. More information: http://wonder.cdc.gov/wonder/help/lbd.html#Weight Factors."
