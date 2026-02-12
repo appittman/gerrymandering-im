@@ -1,0 +1,386 @@
+---
+title: "data cleaning"
+format: html
+---
+
+## setup
+
+Load required packages:
+
+```{r}
+library(readr)
+library(tidyverse)
+library(here)
+library(rvest)
+library(readxl)
+library(janitor)
+library(scales)
+```
+
+## reading in and tidying
+
+fips data for merging
+
+```{r}
+fips <- tibble(tidycensus::fips_codes) |> 
+  select(state_code, state, state_name) |> 
+  unique()
+```
+
+Read in house and senate gerrymandering data from PlanScore.org
+
+```{r}
+bias_statehouse <- read_csv("https://planscore.org/data/bias_statehouse.csv")
+bias_statesenate <- read_csv("https://planscore.org/data/bias_statesenate.csv")
+```
+
+get bias data into tidy stateyear format
+
+```{r}
+bias_h <- bias_statehouse |> 
+  select(state, year, code, plan, eg_adj_avg) |> 
+  rename(eg_h = eg_adj_avg,
+         plan_h = plan,
+         code_h = code) |>
+  arrange(state,year) |> 
+  group_by(state) |> 
+  mutate(eg_h = -1*eg_h, # republican = positive
+         planchange = if_else(lead(plan_h) == plan_h, 0, 1),
+         reps = case_when(planchange == 0 ~ lead(year) - year,
+                          planchange == 1 ~ 2,
+                          .default = 1)) |> 
+  uncount(reps) |> 
+  group_by(code_h) |> 
+  mutate(year = year[1] + row_number() - 1) |> 
+  select(-planchange)
+  
+bias_s <- bias_statesenate |> 
+  select(state, year, code, plan, eg_adj_avg) |> 
+  rename(eg_s = eg_adj_avg,
+         plan_s = plan,
+         code_s = code) |>
+  arrange(state,year) |> 
+  group_by(state) |> 
+  mutate(eg_s = -1*eg_s, #republican = positive
+         planchange = if_else(lead(plan_s) == plan_s, 0, 1),
+         reps = case_when(planchange == 0 ~ lead(year) - year,
+                          planchange == 1 ~ 2,
+                          .default = 1)) |> 
+  uncount(reps) |> 
+  group_by(code_s) |> 
+  mutate(year = year[1] + row_number() - 1) |> 
+  select(-planchange)
+
+bias <- full_join(bias_h, bias_s, by = c("state", "year")) |> 
+  rowwise() |> 
+  mutate(eg = mean(c(eg_h, eg_s), na.rm = F)) |> 
+  ungroup() |> 
+  mutate(eg_abs = abs(eg),
+         eg_z = datawizard::standardize(eg),
+         eg_abs_z = datawizard::standardize(eg_abs)) |> 
+# adding planyear variable for merging with partisanship, then limiting to 1990+
+  arrange(state, year) |> 
+  group_by(state) |> 
+  fill(plan_s, .direction = "down") |> 
+  fill(plan_h, .direction = "down") |> 
+  mutate(planyear = case_when(lag(plan_h) != plan_h ~ year,
+                              lag(plan_s) != plan_s ~ year,
+                              .default = NA_integer_)) |> 
+  relocate(planyear, .after = "year") |> 
+  fill(planyear, .direction = "down") |> 
+  ungroup() |> 
+  filter(year > 1989)
+```
+
+income inequality data
+
+```{r}
+ii <- read_delim(here("data", "WID_Data_16052024-192751.csv"), delim = ";", 
+           skip = 1, col_names = FALSE) |> 
+  select(X1, X4, X5) |> 
+  rename(state_name = X1,
+         year = X4,
+         top10share = X5) |> 
+  mutate(state_name = case_match(state_name,
+                                 "Georgia (US)" ~ "Georgia",
+                                 .default = state_name)) |> 
+  left_join(fips) |> 
+  select(state, year, top10share)
+```
+
+partisanship data
+
+```{r}
+
+# reading in the original data
+partisan_1 <- read_xls(here("data", "partisan", "12s0419.xls"), 
+         skip = 3, n_max = 54, col_names = FALSE) |> 
+  mutate(across(everything(), ~str_remove_all(.x, "[[:space:]](\\\\)[[:digit:]]{1,}"))) |> 
+  t() |> 
+  as.data.frame() |> 
+  tibble() |> 
+  row_to_names(1) |> 
+  clean_names(case = "title") |> 
+  rename(house = State, 
+         year = Na, 
+         party = Na_2) |> 
+  fill(house, .direction = "down") |> 
+  fill(year, .direction = "down") |> 
+  pivot_longer(!c(house,year,party),
+               names_to = "state",
+               values_to = "seats") |> 
+  pivot_wider(names_from = party, 
+              values_from = seats) |> 
+  mutate(across(Democrat:Vacancies, as.numeric)) |> 
+  # throws a warning here: it's just Nebraska
+  rowwise() |> 
+  mutate(prop_rep = Republican / (Democrat + Republican + Other)) |> 
+  group_by(state, year) |> 
+  summarize(prop_rep = mean(prop_rep)) |>
+  mutate(year = as.numeric(year),
+         reps = lead(year) - year,
+         reps = case_when(is.na(reps) ~ 1,
+                          .default = reps)) |> 
+  uncount(reps) |> 
+  group_by(state, year) |> 
+  mutate(year = year[1] + row_number() - 1)
+
+# i have data from 1990-2011; anything after that, i'm going to have to pull individually from the NCSL for that year
+
+# pulled archive PDFs from https://www.ncsl.org/about-state-legislatures/state-partisan-composition
+
+# used pdf24 to convert to excel
+
+read_partisanship <- function(fileyear){
+read_xlsx(here("data", "partisan", paste0("LegisControl_", fileyear, ".xlsx")), 
+          skip = 2, n_max = 50) |> 
+  rename(state = 1,
+         senatedem = 4,
+         senaterep = 5,
+         senateother = 6,
+         housedem = 8,
+         houserep = 9,
+         houseother = 10) |> 
+  select(c(state, senatedem, senaterep, senateother, 
+           housedem, houserep, houseother)) |> 
+  mutate(across(c(senateother,houseother), ~str_remove_all(.x, "[1:9]*v")),
+         across(c(senateother,houseother), ~str_remove_all(.x, ", ")),
+         across(senatedem:houseother, as.numeric),
+         across(c(houseother, senateother), ~case_match(.x,
+                                                        NA_integer_ ~ 0,
+                                                        .default = .x))) |> 
+  rowwise() |> 
+  mutate(prop_rep = (senaterep / sum(senatedem, senaterep, senateother) + 
+                       houserep / sum(housedem, houserep, houseother)) / 2) |> 
+  select(state, prop_rep) |> 
+  mutate(year = fileyear)
+}
+  
+partisan_2 <- map(2012:2019, read_partisanship) |> list_rbind() |> 
+  mutate(state = str_remove(state, "\\*"))
+
+partisan <- bind_rows(partisan_1, partisan_2) |> 
+  left_join(fips, by = c("state" = "state_name")) |> 
+  ungroup() |> 
+  select(state = state.y, year, prop_rep)
+```
+
+state median income data
+
+```{r}
+inc <- read_xls(here("data", "medianhhinc.xls"), sheet = 2) |> 
+  rename_with(~str_extract(.x, "(?<=MEHOINUS)[[:alpha:]]{2}"),
+              !DATE) |> 
+  pivot_longer(cols = !DATE, 
+               names_to = "state",
+               values_to = "inc") |> 
+  mutate(year = year(DATE)) |> 
+  select(-DATE)
+```
+
+# merging
+
+```{r}
+preds_full <- bias |>
+  mutate(lag1year = year + 1,
+         lag2year = year + 2,
+         lag3year = year + 3) |> 
+  left_join(partisan, by = c("state" = "state", "planyear" = "year")) |> 
+  rename(prop_rep_planwriters = prop_rep) |> 
+  mutate(prop_rep_planwriters_z = datawizard::standardize(prop_rep_planwriters))
+
+preds <- preds_full |> 
+  select(state, year, planyear, 
+         lag1year, lag2year, lag3year,
+         eg, eg_abs, eg_z, eg_abs_z,
+         prop_rep_planwriters, prop_rep_planwriters_z)
+
+covs <- partisan |> 
+  left_join(ii) |> 
+  left_join(inc) |> 
+  mutate(across(prop_rep:inc, ~datawizard::standardize(.x), .names = "{.col}_z"))
+
+```
+
+reading in dependent variables
+
+```{r}
+dir(here("data", "im"))
+
+im1 <- read_delim(here("data", "im", "Linked Birth  Infant Death Records, 1995-1998.txt")) |> 
+  select(state = 2,
+         state_code = 3,
+         year = 4,
+         race = 6,
+         deaths = 8,
+         births = 9) |> 
+  mutate(across(c(year, deaths, births), ~as.numeric(.x)))
+
+im2 <- read_delim(here("data", "im", "Linked Birth  Infant Death Records, 1999-2002.txt")) |> 
+  select(state = 2,
+         state_code = 3,
+         year = 4,
+         race = 6,
+         deaths = 8,
+         births = 9) |> 
+  mutate(across(c(year, deaths, births), ~as.numeric(.x)))
+
+im3 <- read_delim(here("data", "im", "Linked Birth  Infant Death Records, 2003-2006.txt")) |> 
+  select(state = 2,
+         state_code = 3,
+         year = 4,
+         race = 6,
+         deaths = 8,
+         births = 9) |> 
+  mutate(across(c(year, deaths, births), ~as.numeric(.x)))
+
+im4 <- read_delim(here("data", "im", "Linked Birth  Infant Death Records, 2007-2021.txt")) |> 
+  select(state = 2,
+         state_code = 3,
+         year = 4,
+         race = 6,
+         deaths = 8,
+         births = 9) |> 
+  mutate(across(c(year, deaths, births), ~as.numeric(.x)))
+
+im <- bind_rows(im1, im2, im3, im4)
+
+outcome <- im |> 
+  mutate(race = case_match(race,
+                           "Non-Hispanic White" ~ "w",
+                           "Non-Hispanic Black" ~ "b"),
+         imr = 1000 * deaths / births) |> 
+  select(-deaths, -births, -state_code) |> 
+  drop_na(race) |> 
+  pivot_wider(id_cols = c("state", "year"),
+              names_from = "race",
+              values_from = "imr",
+              names_prefix = "imr_") |> 
+  drop_na() |> 
+  filter(year %in% c(1995:2018)) |> 
+  arrange(state, year) |> 
+  left_join(fips, by = c("state" = "state_name")) |> 
+  select(state = state.y,
+         year,
+         imr_w,
+         imr_b)
+```
+
+```{r}
+save(bias, im, outcome, file = here("data", "visdata.Rdata"))
+```
+
+```{r}
+complete_states <- outcome |> 
+  group_by(state) |> 
+  summarize(n = n()) |> 
+  filter(n == 24) |> 
+  pull(state)
+
+outcome <- outcome |> 
+  filter(state %in% complete_states) |> 
+  ungroup() |> 
+  filter(!(state %in% c("NE", "LA", "MA", "NV", "MD")))
+
+#in addition to IMR, Nebraska was excluded because it has a unicameral legislature
+#LA, MA, NV, MD had high missingness on gerrymandering data
+#696 possible state-years (29 states, 24 years each)
+
+```
+
+going to end up with 5 different datasets
+
+```{r}
+lag0 <- left_join(outcome, preds, 
+                   by = c("state" = "state", "year" = "year")) |> 
+  left_join(covs,
+            by = c("state" = "state", "year" = "year"))
+
+lag1 <- left_join(outcome, preds, 
+                   by = c("state" = "state", "year" = "lag1year")) |> 
+  left_join(covs,
+            by = c("state" = "state", "year" = "year"))
+
+lag2 <- left_join(outcome, preds,
+                   by = c("state" = "state", "year" = "lag2year")) |> 
+  left_join(covs,
+            by = c("state" = "state", "year" = "year"))
+
+lag3 <- left_join(outcome, preds, 
+                   by = c("state" = "state", "year" = "lag3year")) |> 
+  left_join(covs,
+            by = c("state" = "state", "year" = "year"))
+```
+
+missing data analysis
+
+```{r}
+lag0 |> 
+  mutate(complete = complete.cases(lag0)) |> 
+  filter(!complete) |> 
+  nrow()
+
+lag1 |> 
+  mutate(complete = complete.cases(lag1)) |> 
+  filter(!complete) |> 
+  nrow()
+
+lag2 |> 
+  mutate(complete = complete.cases(lag2)) |> 
+  filter(!complete) |> 
+  nrow()
+
+lag3 |> 
+  mutate(complete = complete.cases(lag3)) |> 
+  filter(!complete)
+```
+
+```{r}
+lag0 |> 
+  drop_na() |> 
+  group_by(state) |> 
+  summarize(n = n()) |> 
+  arrange(n)
+
+lag1 |> 
+  drop_na() |> 
+  group_by(state) |> 
+  summarize(n = n()) |> 
+  arrange(n)
+
+lag2 |> 
+  drop_na() |> 
+  group_by(state) |> 
+  summarize(n = n()) |> 
+  arrange(n)
+
+lag3 |> 
+  drop_na() |> 
+  group_by(state) |> 
+  summarize(n = n()) |> 
+  arrange(n)
+```
+
+```{r}
+save(lag0, lag1, lag2, lag3, file = here("data", "d_020626.Rdata"))
+```

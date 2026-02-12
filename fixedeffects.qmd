@@ -1,0 +1,346 @@
+---
+title: "fixed effects"
+format: pdf
+---
+
+## setup
+
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+library(broom)
+library(fixest)
+library(texreg)
+library(knitr)
+
+load(here("data", "d_020626.Rdata"))
+```
+
+# Main Analyses
+
+## Lag 0
+
+```{r}
+
+# model 1: regular eg, no current partisanship
+mb1_l0 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag0)
+
+mw1_l0 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag0)
+
+#model 2: regular eg, current partisanship
+mb2_l0 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag0)
+
+mw2_l0 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag0)
+```
+
+## Lag 1
+
+```{r}
+# model 1: regular eg, no current partisanship
+mb1_l1 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag1)
+
+mw1_l1 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag1)
+
+#model 2: regular eg, current partisanship
+mb2_l1 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag1)
+
+mw2_l1 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag1)
+
+```
+
+## Lag 2
+
+```{r}
+# model 1: regular eg, no current partisanship
+mb1_l2 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag2)
+
+mw1_l2 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag2)
+
+#model 2: regular eg, current partisanship
+mb2_l2 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag2)
+
+mw2_l2 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag2)
+```
+
+## Lag 3
+
+```{r}
+# model 1: regular eg, no current partisanship
+mb1_l3 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag3)
+
+mw1_l3 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag3)
+
+
+#model 2: regular eg, current partisanship
+mb2_l3 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag3)
+
+mw2_l3 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag3)
+
+```
+
+## Model Fit
+
+```{r}
+
+list(mb1_l0, mb1_l1, mb1_l2, mb1_l3, mb2_l0, mb2_l1, mb2_l2, mb2_l3) |> 
+  set_names(c("mb1_l0", "mb1_l1", "mb1_l2", "mb1_l3", "mb2_l0", "mb2_l1", "mb2_l2", "mb2_l3")) |> 
+  map(~fitstat(.x, type = c("aic", "bic")))
+
+
+list(mw1_l0, mw1_l1, mw1_l2, mw1_l3, mw2_l0, mw2_l1, mw2_l2, mw2_l3) |> 
+  set_names(c("mw1_l0", "mw1_l1", "mw1_l2", "mw1_l3", "mw2_l0", "mw2_l1", "mw2_l2", "mw2_l3")) |> 
+  map(~fitstat(.x, type = c("aic", "bic")))
+
+
+
+```
+
+## Main Tables
+
+```{r}
+
+list(mb1_l3, mw1_l3, mb2_l3, mw2_l3) |> 
+  map(~fitstat(.x, type = "aic"))
+  
+list(mb1_l3, mw1_l3, mb2_l3, mw2_l3) |> 
+  map(~fitstat(.x, type = "bic"))
+
+texreg::wordreg(list(mb1_l3, 
+             mw1_l3, 
+             mb2_l3, 
+             mw2_l3),
+                  custom.model.names = 
+          c("Model 1 (Black)", 
+            "Model 1 (White)", 
+            "Model 2 (Black)", 
+            "Model 2 (White)"),
+                  custom.coef.names = c("Efficiency Gap", "Proportion Republican: Last Redistricting", "Top 10%'s Share of Income", "Median Income", "Proportion Republican: Current"),
+                  include.adjrs = F,
+                  custom.gof.rows = list( 
+                                         "AIC" = c("2,360.4",
+                                                   "816.0",
+                                                   "2,362.2",
+                                                   "815.2"),
+                                         "BIC" = c("2,609.9", 
+                                                   "1,065.5", 
+                                                   "2,616.2", 
+                                                   "1,069.2")),
+                  reorder.gof = (c(3,4,5,1,2,6,7)),
+        single.row = T,
+        file = "tables/mainresulttables.docx")
+```
+
+## Appendix Tables
+
+```{r}
+
+list(mb1_l0, mw1_l0, mb2_l0, mw2_l0) |> 
+  map(~fitstat(.x, type = "aic"))
+  
+list(mb1_l0, mw1_l0, mb2_l0, mw2_l0) |> 
+  map(~fitstat(.x, type = "bic"))
+
+wordreg(list(mb1_l0, 
+             mw1_l0, 
+             mb2_l0, 
+             mw2_l0),
+                  custom.model.names = 
+          c("Model 1 (Black)", 
+            "Model 1 (White)", 
+            "Model 2 (Black)", 
+            "Model 2 (White)"),
+                  custom.coef.names = c("Efficiency Gap", "Proportion Republican: Last Redistricting", "Top 10%'s Share of Income", "Median Income", "Proportion Republican: Current"),
+                  include.adjrs = F,
+                  custom.gof.rows = list( 
+                                         "AIC" = c("2,412.4",
+                                                   "815.4",
+                                                   "2,413.5",
+                                                   "817.4"),
+                                         "BIC" = c("2,663.0", 
+                                                   "1,066.0", 
+                                                   "2,668.6", 
+                                                   "1,072.5")),
+                  reorder.gof = (c(3,4,5,1,2,6,7)),
+        single.row = T,
+        file = "tables/mainresults_lag0.docx")
+
+list(mb1_l1, mw1_l1, mb2_l1, mw2_l1) |> 
+  map(~fitstat(.x, type = "aic"))
+  
+list(mb1_l1, mw1_l1, mb2_l1, mw2_l1) |> 
+  map(~fitstat(.x, type = "bic"))
+
+wordreg(list(mb1_l1, 
+             mw1_l1, 
+             mb2_l1, 
+             mw2_l1),
+                  custom.model.names = 
+          c("Model 1 (Black)", 
+            "Model 1 (White)", 
+            "Model 2 (Black)", 
+            "Model 2 (White)"),
+                  custom.coef.names = c("Efficiency Gap", "Proportion Republican: Last Redistricting", "Top 10%'s Share of Income", "Median Income", "Proportion Republican: Current"),
+                  include.adjrs = F,
+                  custom.gof.rows = list( 
+                                         "AIC" = c("2,404.7",
+                                                   "818.2",
+                                                   "2,406.1",
+                                                   "819.8"),
+                                         "BIC" = c("2,655.2", 
+                                                   "1,068.7", 
+                                                   "2,661.1", 
+                                                   "1,074.8")),
+                  reorder.gof = (c(3,4,5,1,2,6,7)),
+        single.row = T,
+        file = "tables/mainresults_lag1.docx")
+
+
+list(mb1_l2, mw1_l2, mb2_l2, mw2_l2) |> 
+  map(~fitstat(.x, type = "aic"))
+  
+list(mb1_l2, mw1_l2, mb2_l2, mw2_l2) |> 
+  map(~fitstat(.x, type = "bic"))
+
+wordreg(list(mb1_l2, 
+             mw1_l2, 
+             mb2_l2, 
+             mw2_l2),
+                  custom.model.names = 
+          c("Model 1 (Black)", 
+            "Model 1 (White)", 
+            "Model 2 (Black)", 
+            "Model 2 (White)"),
+                  custom.coef.names = c("Efficiency Gap", "Proportion Republican: Last Redistricting", "Top 10%'s Share of Income", "Median Income", "Proportion Republican: Current"),
+                  include.adjrs = F,
+                  custom.gof.rows = list( 
+                                         "AIC" = c("2,369.0",
+                                                   "816.2",
+                                                   "2,371.0",
+                                                   "816.2"),
+                                         "BIC" = c("2,619.0", 
+                                                   "1,066.2", 
+                                                   "2,625.4", 
+                                                   "1,070.7")),
+                  reorder.gof = (c(3,4,5,1,2,6,7)),
+        single.row = T,
+        file = "tables/mainresults_lag2.docx")
+
+```
+
+# Supplemental Analyses
+
+## Absolute Value
+
+### Lag 0
+
+```{r}
+#model 3: abs value eg, no current partisanship
+mb3_l0 <-  feols(imr_b ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z 
+                 | state + year, data = lag0)
+mw3_l0 <-  feols(imr_w ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z 
+                 | state + year, data = lag0)
+
+#model 4: abs value eg, current partisanship
+mb4_l0<- feols(imr_b ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                 prop_rep_z | state + year, 
+               data = lag0)
+mw4_l0<- feols(imr_w ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                 prop_rep_z | state + year, 
+               data = lag0)
+```
+
+### Lag 1
+
+```{r}
+
+#model 3: abs value eg, no current partisanship
+mb3_l1 <-  feols(imr_b ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z 
+                 | state + year, data = lag1)
+mw3_l1 <-  feols(imr_w ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z 
+                 | state + year, data = lag1)
+
+#model 4: abs value eg, current partisanship
+mb4_l1<- feols(imr_b ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                 prop_rep_z | state + year, 
+               data = lag1)
+mw4_l1<- feols(imr_w ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                 prop_rep_z | state + year, 
+               data = lag1)
+
+```
+
+### Lag 2
+
+```{r}
+
+#model 3: abs value eg, no current partisanship
+mb3_l2 <-  feols(imr_b ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z 
+                 | state + year, data = lag2)
+mw3_l2 <-  feols(imr_w ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z 
+                 | state + year, data = lag2)
+
+#model 4: abs value eg, current partisanship
+mb4_l2<- feols(imr_b ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                 prop_rep_z | state + year, 
+               data = lag2)
+mw4_l2<- feols(imr_w ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                 prop_rep_z | state + year, 
+               data = lag2)
+
+
+```
+
+### Lag 3
+
+```{r}
+
+#model 3: abs value eg, no current partisanship
+mb3_l3 <-  feols(imr_b ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z 
+                 | state + year, data = lag3)
+mw3_l3 <-  feols(imr_w ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z 
+                 | state + year, data = lag3)
+
+#model 4: abs value eg, current partisanship
+mb4_l3 <- feols(imr_b ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                 prop_rep_z | state + year, 
+               data = lag3)
+mw4_l3 <- feols(imr_w ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                 prop_rep_z | state + year, 
+               data = lag3)
+
+```
+
+### Appendix Tables
+
+```{r}
+#### will get back to this
+```
+
+```{r}
+save(mb1_l3, mw1_l3, mb2_l3, mw2_l3, file = here("data", "mainmodels.Rdata"))
+```

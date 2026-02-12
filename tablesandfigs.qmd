@@ -1,0 +1,282 @@
+---
+title: "Tables & Figures"
+format: html
+---
+
+```{r}
+#| label: setup
+
+library(here)
+library(tidyverse)
+library(gtsummary)
+library(colorspace)
+library(broom)
+library(patchwork)
+load(here("data", "mainmodels.Rdata"))
+load(here("data", "d_020626.Rdata"))
+load(here("data", "visdata.Rdata"))
+```
+
+```{r}
+#| label: descriptive table
+
+
+tbl_2018 <- lag3 |>
+  drop_na() |> 
+  filter(year == 2018) |> 
+  tbl_summary(include = c(imr_w, imr_b, eg,
+                                     prop_rep_planwriters, prop_rep, 
+                                     inc, top10share),
+              label = list(imr_w = "Infant Mortality Rate (White)",
+                           imr_b = "Infant Mortality Rate (Black)",
+                           eg = "Efficiency Gap Score",
+                           prop_rep_planwriters = "Proportion Republican: Last Redistricting",
+                           prop_rep = "Proportion Republican: Current",
+                           inc = "Median Income",
+                           top10share = "Top 10%'s Share of Income"),
+                         statistic = list(all_continuous() ~ 
+                                              "{mean} ({sd})")) |> 
+  modify_header(all_stat_cols() ~ "Mean (SD)") |> 
+  modify_footnote(all_stat_cols() ~ NA)
+
+tbl_1995 <- lag3 |> 
+  drop_na() |> 
+  filter(year == 1995) |> 
+  tbl_summary(include = c(imr_w, imr_b, eg,
+                                     prop_rep_planwriters, prop_rep, 
+                                     inc, top10share),
+              label = list(imr_w = "Infant Mortality Rate (White)",
+                           imr_b = "Infant Mortality Rate (Black)",
+                           eg = "Efficiency Gap Score",
+                           prop_rep_planwriters = "Proportion Republican: Last Redistricting",
+                           prop_rep = "Proportion Republican: Current",
+                           inc = "Median Income",
+                           top10share = "Top 10%'s Share of Income"),
+                         statistic = list(all_continuous() ~ 
+                                              "{mean} ({sd})")) |> 
+  modify_header(all_stat_cols() ~ "Mean (SD)") |> 
+  modify_footnote(all_stat_cols() ~ NA)
+
+tbl_full <- lag3 |> 
+  drop_na() |> 
+  tbl_summary(include = c(imr_w, imr_b, eg,
+                                     prop_rep_planwriters, prop_rep, 
+                                     inc, top10share),
+              label = list(imr_w = "Infant Mortality Rate (White)",
+                           imr_b = "Infant Mortality Rate (Black)",
+                           eg = "Efficiency Gap Score",
+                           prop_rep_planwriters = "Proportion Republican: Last Redistricting",
+                           prop_rep = "Proportion Republican: Current",
+                           inc = "Median Income",
+                           top10share = "Top 10%'s Share of Income"),
+                         statistic = list(all_continuous() ~ 
+                                              "{mean} ({sd})")) |> 
+  modify_header(all_stat_cols() ~ "Mean (SD)") |> 
+  modify_footnote(all_stat_cols() ~ NA)
+
+
+tbl_merge(tbls = list(tbl_full, tbl_1995, tbl_2018),
+          tab_spanner = c("Full Sample", "1995", "2018")) |> 
+  as_gt() |> 
+  gt::gtsave(filename = "desctable.docx", path = 
+               here("tables"))
+
+```
+
+```{r}
+#| label: infant mortality vis
+included_states <- lag3 |> 
+  group_by(state) |> 
+  summarize(n = n()) |> 
+  pull(state)
+
+fips <- tibble(tidycensus::fips_codes) |> 
+  select(state_code, state, state_name) |> 
+  unique()
+
+im_vis <- im |> 
+  mutate(race = case_match(race,
+                           "Non-Hispanic White" ~ "w",
+                           "Non-Hispanic Black" ~ "b")) |> 
+  left_join(fips, by = c("state_code", "state" = "state_name")) |> 
+  select(state = state.y, year, race, deaths, births) |> 
+  filter(state %in% included_states)
+
+im_start <- im_vis |> 
+  filter(year %in% c(1995:1997)) |> 
+  group_by(state, race) |> 
+  summarize(deaths_start = sum(deaths),
+            births_start = sum(births)) |> 
+  mutate(imr_start = 1000 * deaths_start / births_start)
+
+im_end <- im_vis |> 
+  filter(year %in% c(2016:2018)) |> 
+  group_by(state, race) |> 
+  summarize(deaths_end = sum(deaths),
+            births_end = sum(births)) |> 
+  mutate(imr_end = 1000 * deaths_end / births_end)
+
+im_df <- left_join(im_start, im_end)
+
+imr_plot <- ggplot(im_df) +
+  geom_point(aes(y = state, x = imr_end, color = race)) +
+  geom_segment(aes(y = state, x = imr_end, xend = imr_start, color = race)) +
+  theme_minimal() +
+  scale_y_discrete(limits = rev) +
+  scale_color_discrete(labels = c("Non-Hispanic\nBlack", "Non-Hispanic\nWhite")) +
+  labs(y = "State",
+       x = "Infant Mortality Rate\n(per 1,000 live births)",
+       color = "Race")
+
+
+ggsave(imr_plot,
+       filename = here("figures", "imr_plot.png"),
+       dpi = 300,
+       width = 1080,
+       height = 800,
+       units = "px",
+       scale = 2)
+```
+
+```{r}
+eg_start <- bias |> 
+  filter(state %in% included_states) |> 
+  filter(year > 1991) |> 
+  drop_na(eg) |> 
+  group_by(state) |> 
+  slice_min(year) |> 
+  arrange(desc(year)) |> 
+  select(state, year_start = year, eg_start = eg)
+
+eg_end <- bias |> 
+  filter(state %in% included_states) |> 
+  filter(year < 2016) |> 
+  drop_na(eg) |> 
+  group_by(state) |> 
+  slice_max(year) |> 
+  arrange(year) |> 
+  select(state, year_end = year, eg_end = eg)
+
+
+eg_df <- left_join(eg_start, eg_end)
+
+bias |> 
+  filter(year %in% c(1992:2015)) |> 
+  summarize(mean(eg, na.rm = T))
+
+eg_df <- eg_df |> 
+  arrange(state)
+
+eg_plot <- ggplot(eg_df) + 
+  geom_vline(xintercept = 0.00956, linetype = "dashed") +
+  geom_point(aes(y = state, x = eg_end, color = eg_end - eg_start)) +
+  geom_segment(aes(y = state, x = eg_end, xend = eg_start, color = eg_end - eg_start)) +
+  scale_y_discrete(labels = rev(paste0(eg_df$state, " (", eg_df$year_start, "-", eg_df$year_end, ")")),
+                   limits = rev) +
+  scale_color_continuous_sequential(palette = "Red-Blue",
+                                    rev = T) +
+  theme_minimal() +
+  labs(x = "Efficiency Gap Scores",
+       y = "State (Years)",
+       color = "Total Change")
+
+ggsave(eg_plot,
+       filename = here("figures", "eg_plot.png"),
+       dpi = 300,
+       width = 1080,
+       height = 800,
+       units = "px",
+       scale = 2)
+
+```
+
+```{r}
+coefb1 <- tidy(mb1_l3) |> 
+  filter(str_detect(term, "eg|prop")) |> 
+  select(term, est = estimate, se = std.error) |> 
+  mutate(model = 1,
+         race = "b")
+
+coefb2 <- tidy(mb2_l3) |> 
+  filter(str_detect(term, "eg|prop")) |> 
+  select(term, est = estimate, se = std.error) |> 
+  mutate(model = 2,
+         race = "b")
+#################################
+coefw1 <- tidy(mw1_l3) |> 
+  filter(str_detect(term, "eg|prop")) |> 
+  select(term, est = estimate, se = std.error) |> 
+  mutate(model = 1,
+         race = "w")
+
+coefw2 <- tidy(mw2_l3) |> 
+  filter(str_detect(term, "eg|prop")) |> 
+  select(term, est = estimate, se = std.error) |> 
+  mutate(model = 2,
+         race = "w")
+
+
+coefs <- bind_rows(coefb1, coefb2, coefw1, coefw2)
+
+```
+
+```{r}
+
+coefplot_b <- coefs |> 
+  filter(race == "b") |> 
+  mutate(term = fct_relevel(term, "prop_rep_z", "prop_rep_planwriters_z", "eg_z"),
+         model = case_match(model,
+                            1 ~ "Model 1",
+                            2 ~ "Model 2"),
+         race = fct(race, levels = c("b", "w"))) |> 
+  ggplot(aes(y = term)) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_point(aes(x = est, color = race)) +
+  geom_segment(aes(x = est + 1.96*se, xend = est - 1.96*se, color = race)) +
+    scale_color_manual(values = c("tomato")) +
+    xlim(-.6, .9) +
+  facet_wrap("model") +
+  scale_y_discrete(labels = c("Proportion Republican:\nCurrent", "Proportion Republican:\nLast Redistricting", "Efficiency Gap")) +
+  theme_minimal() +
+  labs(x = "Estimates and 95% Confidence Intervals",
+       y = "Variable",
+       color = "") +
+  theme(legend.position = "none")
+
+coefplot_w <- coefs |> 
+  filter(race == "w") |> 
+  mutate(term = fct_relevel(term, "prop_rep_z", "prop_rep_planwriters_z", "eg_z"),
+         model = case_match(model,
+                            1 ~ "Model 1",
+                            2 ~ "Model 2"),
+         race = fct(race, levels = c("b", "w"))) |> 
+  ggplot(aes(y = term)) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_point(aes(x = est, color = race)) +
+  geom_segment(aes(x = est + 1.96*se, xend = est - 1.96*se, color = race)) +
+  scale_color_manual(values = c("turquoise3")) +
+  facet_wrap("model") +
+  xlim(-.6, .9) +
+  scale_y_discrete(labels = c("Proportion Republican:\nCurrent", "Proportion Republican:\nLast Redistricting", "Efficiency Gap")) +
+  theme_minimal() +
+  labs(x = "Estimates and 95% Confidence Intervals",
+       y = "Variable",
+       color = "") +
+  theme(legend.position = "none")
+
+coefplot <- coefplot_b +
+  coefplot_w +
+  plot_layout(ncol = 1,
+              axes = "collect") +
+  plot_annotation(tag_levels = list(c("Non-Hispanic Black", "Non-Hispanic White"))) &
+                  theme(plot.tag.position = "right",
+                        plot.tag = element_text(angle = -90, size = 10))
+
+ggsave(coefplot,
+       filename = here("figures", "coef_plot.png"),
+       dpi = 300,
+       width = 1080,
+       height = 800,
+       units = "px",
+       scale = 2)
+```
