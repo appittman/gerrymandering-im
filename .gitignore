@@ -5,3 +5,4 @@
 *.RData
 past/
 writing/
+*.dta
