@@ -15,6 +15,7 @@ library(rvest)
 library(readxl)
 library(janitor)
 library(scales)
+library(haven)
 ```
 
 ## reading in and tidying
@@ -220,6 +221,8 @@ covs <- partisan |>
   left_join(inc) |> 
   mutate(across(prop_rep:inc, ~datawizard::standardize(.x), .names = "{.col}_z"))
 
+
+save(preds, covs, file = here("data", "preds_covs.Rdata"))
 ```
 
 reading in dependent variables
@@ -383,4 +386,55 @@ lag3 |>
 
 ```{r}
 save(lag0, lag1, lag2, lag3, file = here("data", "d_020626.Rdata"))
+```
+
+# new outcomes
+
+```{r}
+### state policy and politics database
+# https://asi.syr.edu/state-policy-politics-database-sppd/
+
+### all cause working age mortality from CDC Wonder
+load(here("data", "preds_covs.Rdata"))
+sppd <- read_dta(here("data", "SPPD_V1_3.1.dta"))
+
+sppd <- sppd |> 
+  select(state, state_name, year, 
+         sumopioid,
+         tobaccotax_2023,
+         firearms_total,
+         medicaidexp,
+         medgen_v1,
+         medgen_v2,
+         SNAP_2023,
+         TANF2023) |> 
+  filter(year %in% c(1997:2018))  |> 
+  zap_formats() |>
+  zap_labels() |> 
+  zap_label()
+
+acm <- readxl::read_xls(here("data", "workingagemortality.xls"))
+
+
+acm <- acm |> 
+  janitor::clean_names() |> 
+  select(state_name = state,
+         year,
+         wam = crude_rate) |> 
+  drop_na(year)
+
+new_out <- left_join(sppd, acm, by = c("state_name", "year"))
+
+df_nopreds <- left_join(new_out, covs, by = c("state", "year"))
+
+newout_lag0 <- left_join(df_nopreds, preds, by = c("state" = "state", "year" = "year"))
+newout_lag1 <- left_join(df_nopreds, preds, by = c("state" = "state", "year" = "lag1year"))
+
+newout_lag2 <- left_join(df_nopreds, preds, by = c("state" = "state", "year" = "lag2year"))
+
+newout_lag3 <- left_join(df_nopreds, preds, by = c("state" = "state", "year" = "lag3year"))
+
+preds
+save(newout_lag0, newout_lag1, newout_lag2, newout_lag3,
+     file = here("data", "newout.Rdata"))
 ```
