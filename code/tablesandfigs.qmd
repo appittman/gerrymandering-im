@@ -15,10 +15,11 @@ library(patchwork)
 load(here("data", "mainmodels.Rdata"))
 load(here("data", "d_020626.Rdata"))
 load(here("data", "visdata.Rdata"))
+load(here("data", "preds_covs.Rdata"))
 ```
 
 ```{r}
-#| label: descriptive table
+#| label: descriptive table: sample
 
 
 tbl_2018 <- lag3 |>
@@ -36,7 +37,7 @@ tbl_2018 <- lag3 |>
                            top10share = "Top 10%'s Share of Income"),
                          statistic = list(all_continuous() ~ 
                                               "{mean} ({sd})")) |> 
-  modify_header(all_stat_cols() ~ "Mean (SD)") |> 
+  modify_header(all_stat_cols() ~ "2018") |> 
   modify_footnote(all_stat_cols() ~ NA)
 
 tbl_1995 <- lag3 |> 
@@ -54,7 +55,7 @@ tbl_1995 <- lag3 |>
                            top10share = "Top 10%'s Share of Income"),
                          statistic = list(all_continuous() ~ 
                                               "{mean} ({sd})")) |> 
-  modify_header(all_stat_cols() ~ "Mean (SD)") |> 
+  modify_header(all_stat_cols() ~ "1995") |> 
   modify_footnote(all_stat_cols() ~ NA)
 
 tbl_full <- lag3 |> 
@@ -71,16 +72,100 @@ tbl_full <- lag3 |>
                            top10share = "Top 10%'s Share of Income"),
                          statistic = list(all_continuous() ~ 
                                               "{mean} ({sd})")) |> 
-  modify_header(all_stat_cols() ~ "Mean (SD)") |> 
+  modify_header(all_stat_cols() ~ "All Years") |> 
   modify_footnote(all_stat_cols() ~ NA)
 
+tbl_sample <- tbl_merge(tbls = list(tbl_full, tbl_1995, tbl_2018),
+          tab_spanner = FALSE)
 
-tbl_merge(tbls = list(tbl_full, tbl_1995, tbl_2018),
-          tab_spanner = c("Full Sample", "1995", "2018")) |> 
+
+
+```
+
+```{r}
+#| label: desc table: full US
+us_full <- left_join(preds, covs, by = c("state", "year")) |> 
+  select(c(state, year, eg, prop_rep_planwriters, 
+           prop_rep, top10share, inc)) |> 
+  filter(year %in% c(1995:2018))
+
+us_1995 <- us_full |> filter(year == 1995)
+us_2018 <- us_full |> filter(year == 2018)
+
+tbl_95 <- us_1995 |> 
+  tbl_summary(include = c(eg:inc),
+              missing = "no",
+              label = list(eg = "Efficiency Gap Score",
+                           prop_rep_planwriters = "Proportion Republican: Last Redistricting",
+                           prop_rep = "Proportion Republican: Current",
+                           inc = "Median Income",
+                           top10share = "Top 10%'s Share of Income"),
+                         statistic = list(all_continuous() ~ 
+                                              "{mean} ({sd})")) |> 
+  modify_header(all_stat_cols() ~ "1995") |> 
+  modify_footnote(all_stat_cols() ~ NA)
+
+tbl_18 <- us_2018 |> 
+  tbl_summary(include = c(eg:inc),
+              missing = "no",
+              label = list(eg = "Efficiency Gap Score",
+                           prop_rep_planwriters = "Proportion Republican: Last Redistricting",
+                           prop_rep = "Proportion Republican: Current",
+                           inc = "Median Income",
+                           top10share = "Top 10%'s Share of Income"),
+                         statistic = list(all_continuous() ~ 
+                                              "{mean} ({sd})")) |> 
+  modify_header(all_stat_cols() ~ "2018") |> 
+  modify_footnote(all_stat_cols() ~ NA)
+
+tbl_f <- us_full |> 
+  tbl_summary(include = c(eg:inc),
+              missing = "no",
+              label = list(eg = "Efficiency Gap Score",
+                           prop_rep_planwriters = "Proportion Republican: Last Redistricting",
+                           prop_rep = "Proportion Republican: Current",
+                           inc = "Median Income",
+                           top10share = "Top 10%'s Share of Income"),
+                         statistic = list(all_continuous() ~ 
+                                              "{mean} ({sd})")) |> 
+  modify_header(all_stat_cols() ~ "All Years") |> 
+  modify_footnote(all_stat_cols() ~ NA)
+
+tbl_us <- tbl_merge(tbls = list(tbl_f, tbl_95, tbl_18),
+          tab_spanner = FALSE)
+
+tbl_merge(tbls = list(tbl_sample, tbl_us),
+          tab_spanner = c("Sample", "United States")) |> 
   as_gt() |> 
-  gt::gtsave(filename = "desctable.docx", path = 
-               here("tables"))
+  gt::gtsave(filename = here("tables", "desctable.docx"))
 
+```
+
+```{r}
+#| label: full us imr
+
+im |> 
+  filter(year == 1995) |> 
+  mutate(imr = 1000 * deaths / births) |> 
+  group_by(race) |> 
+  summarize(mean = mean(imr, na.rm = T),
+            sd = sd(imr, na.rm = T)) |> 
+  pull(mean, sd)
+
+im |> 
+  filter(year == 2018) |> 
+  mutate(imr = 1000 * deaths / births) |> 
+  group_by(race) |> 
+  summarize(mean = mean(imr, na.rm = T),
+            sd = sd(imr, na.rm = T)) |> 
+  pull(mean, sd)
+
+im |> 
+  mutate(imr = 1000 * deaths / births) |> 
+  group_by(race) |> 
+  summarize(mean = mean(imr, na.rm = T),
+            sd = sd(imr, na.rm = T)) |> 
+  pull(mean, sd)
 ```
 
 ```{r}
