@@ -228,7 +228,6 @@ save(preds, covs, file = here("data", "preds_covs.Rdata"))
 reading in dependent variables
 
 ```{r}
-dir(here("data", "im"))
 
 im1 <- read_delim(here("data", "im", "Linked Birth  Infant Death Records, 1995-1998.txt")) |> 
   select(state = 2,
@@ -268,7 +267,7 @@ im4 <- read_delim(here("data", "im", "Linked Birth  Infant Death Records, 2007-2
 
 im <- bind_rows(im1, im2, im3, im4)
 
-outcome <- im |> 
+outcome_a <- im |> 
   mutate(race = case_match(race,
                            "Non-Hispanic White" ~ "w",
                            "Non-Hispanic Black" ~ "b"),
@@ -289,8 +288,61 @@ outcome <- im |>
          imr_b)
 ```
 
+adding the total infant mortality rate
+
 ```{r}
-save(bias, im, outcome, file = here("data", "visdata.Rdata"))
+imr_t_1 <- read_csv(here("data", "im", "imr_all_95to98.csv")) |> 
+  select(state = 2,
+         state_code = 3,
+         year = 4, 
+         deaths = 6,
+         births = 7) |> 
+  mutate(race = "t")
+
+imr_t_2 <- read_csv(here("data", "im", "imr_all_99to02.csv")) |> 
+  select(state = 2,
+         state_code = 3,
+         year = 4, 
+         deaths = 6,
+         births = 7) |> 
+  mutate(race = "t")
+
+imr_t_3 <- read_csv(here("data", "im", "imr_all_03to06.csv")) |> 
+  select(state = 2,
+         state_code = 3,
+         year = 4, 
+         deaths = 6,
+         births = 7) |> 
+  mutate(race = "t")
+
+imr_t_4 <- read_csv(here("data", "im", "imr_all_07to23.csv")) |> 
+  select(state = 2,
+         state_code = 3,
+         year = 4, 
+         deaths = 6,
+         births = 7) |> 
+  mutate(race = "t")
+
+im_t <- bind_rows(imr_t_1, imr_t_2, imr_t_3, imr_t_4)
+
+outcome_b <- im_t |> 
+  mutate(imr = 1000 * deaths / births) |> 
+  select(-deaths, -births, -state_code) |>
+  drop_na(year) |> 
+  rename(imr_t = imr) |> 
+  select(-race) |> 
+  filter(year %in% c(1995:2018)) |> 
+  arrange(state, year) |> 
+  left_join(fips, by = c("state" = "state_name")) |> 
+  select(state = state.y,
+         year,
+         imr_t)
+
+outcome <- left_join(outcome_a, outcome_b)
+```
+
+```{r}
+save(bias, outcome, file = here("data", "visdata.Rdata"))
 ```
 
 ```{r}
@@ -311,7 +363,7 @@ outcome <- outcome |>
 
 ```
 
-going to end up with 5 different datasets
+going to end up with 4 different datasets
 
 ```{r}
 lag0 <- left_join(outcome, preds, 
@@ -385,7 +437,7 @@ lag3 |>
 ```
 
 ```{r}
-save(lag0, lag1, lag2, lag3, file = here("data", "d_020626.Rdata"))
+save(lag0, lag1, lag2, lag3, file = here("data", "df_aug2026.Rdata"))
 ```
 
 # new outcomes

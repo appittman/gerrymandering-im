@@ -14,7 +14,7 @@ library(fixest)
 library(texreg)
 library(knitr)
 
-load(here("data", "d_020626.Rdata"))
+load(here("data", "df_aug2026.Rdata"))
 ```
 
 # Main Analyses
@@ -32,11 +32,18 @@ mw1_l0 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
                 | state + year, 
                 data = lag0)
 
+mt1_l0 <- feols(imr_t ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag0)
+
 #model 2: regular eg, current partisanship
 mb2_l0 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
                   prop_rep_z | state + year, data = lag0)
 
 mw2_l0 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag0)
+
+mt2_l0 <- feols(imr_t ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
                   prop_rep_z | state + year, data = lag0)
 ```
 
@@ -52,11 +59,19 @@ mw1_l1 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
                 | state + year, 
                 data = lag1)
 
+mt1_l1 <- feols(imr_t ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag1)
+
 #model 2: regular eg, current partisanship
 mb2_l1 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
                   prop_rep_z | state + year, data = lag1)
 
 mw2_l1 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag1)
+
+
+mt2_l1 <- feols(imr_t ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
                   prop_rep_z | state + year, data = lag1)
 
 ```
@@ -73,11 +88,18 @@ mw1_l2 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
                 | state + year, 
                 data = lag2)
 
+mt1_l2 <- feols(imr_t ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag2)
+
 #model 2: regular eg, current partisanship
 mb2_l2 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
                   prop_rep_z | state + year, data = lag2)
 
 mw2_l2 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag2)
+
+mt2_l2 <- feols(imr_t ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
                   prop_rep_z | state + year, data = lag2)
 ```
 
@@ -93,12 +115,18 @@ mw1_l3 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
                 | state + year, 
                 data = lag3)
 
+mt1_l3 <- feols(imr_t ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z
+                | state + year, 
+                data = lag3)
 
 #model 2: regular eg, current partisanship
 mb2_l3 <- feols(imr_b ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
                   prop_rep_z | state + year, data = lag3)
 
 mw2_l3 <- feols(imr_w ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
+                  prop_rep_z | state + year, data = lag3)
+
+mt2_l3 <- feols(imr_t ~ eg_z + prop_rep_planwriters_z + top10share_z + inc_z +
                   prop_rep_z | state + year, data = lag3)
 
 ```
@@ -117,6 +145,10 @@ list(mw1_l0, mw1_l1, mw1_l2, mw1_l3, mw2_l0, mw2_l1, mw2_l2, mw2_l3) |>
   map(~fitstat(.x, type = c("aic", "bic")))
 
 
+list(mt1_l0, mt1_l1, mt1_l2, mt1_l3, mt2_l0, mt2_l1, mt2_l2, mt2_l3) |> 
+  set_names(c("mt1_l0", "mt1_l1", "mt1_l2", "mt1_l3", "mt2_l0", "mt2_l1", "mt2_l2", "mt2_l3")) |> 
+  map(~fitstat(.x, type = c("aic", "bic")))
+
 
 ```
 
@@ -124,132 +156,122 @@ list(mw1_l0, mw1_l1, mw1_l2, mw1_l3, mw2_l0, mw2_l1, mw2_l2, mw2_l3) |>
 
 ```{r}
 
-list(mb1_l3, mw1_l3, mb2_l3, mw2_l3) |> 
-  map(~fitstat(.x, type = "aic"))
+aic <- list(mb1_l3, mw1_l3, mt1_l3, mb2_l3, mw2_l3, mt2_l3) |> 
+  map(~fitstat(.x, type = "aic", verbose = F)) |> 
+  tibble() |> 
+  unnest_wider(1)
   
-list(mb1_l3, mw1_l3, mb2_l3, mw2_l3) |> 
-  map(~fitstat(.x, type = "bic"))
+bic <- list(mb1_l3, mw1_l3, mt1_l3, mb2_l3, mw2_l3, mt2_l3) |> 
+  map(~fitstat(.x, type = "bic", verbose = F)) |> 
+   tibble() |> 
+  unnest_wider(1)
 
-texreg::wordreg(list(mb1_l3, 
-             mw1_l3, 
-             mb2_l3, 
-             mw2_l3),
+texreg::wordreg(list(mb1_l3, mw1_l3, mt1_l3, mb2_l3, mw2_l3, mt2_l3),
                   custom.model.names = 
           c("Model 1 (Black)", 
-            "Model 1 (White)", 
+            "Model 1 (White)",
+            "Model 1 (Total)",
             "Model 2 (Black)", 
-            "Model 2 (White)"),
+            "Model 2 (White)",
+            "Model 2 (Total)"),
                   custom.coef.names = c("Efficiency Gap", "Proportion Republican: Last Redistricting", "Top 10%'s Share of Income", "Median Income", "Proportion Republican: Current"),
                   include.adjrs = F,
                   custom.gof.rows = list( 
-                                         "AIC" = c("2,360.4",
-                                                   "816.0",
-                                                   "2,362.2",
-                                                   "815.2"),
-                                         "BIC" = c("2,609.9", 
-                                                   "1,065.5", 
-                                                   "2,616.2", 
-                                                   "1,069.2")),
+                                         "AIC" = aic$aic,
+                                         "BIC" = bic$bic),
                   reorder.gof = (c(3,4,5,1,2,6,7)),
         single.row = T,
-        file = "tables/mainresulttables.docx")
+        file = "tables_figs/mainresulttables.docx")
 ```
 
 ## Appendix Tables
 
 ```{r}
 
-list(mb1_l0, mw1_l0, mb2_l0, mw2_l0) |> 
-  map(~fitstat(.x, type = "aic"))
-  
-list(mb1_l0, mw1_l0, mb2_l0, mw2_l0) |> 
-  map(~fitstat(.x, type = "bic"))
+aic_lag0 <- list(mb1_l0, mw1_l0, mt1_l0, mb2_l0, mw2_l0, mt2_l0) |> 
+  map(~fitstat(.x, type = "aic", verbose = F)) |> 
+  tibble() |> 
+  unnest_wider(1)
 
-wordreg(list(mb1_l0, 
-             mw1_l0, 
-             mb2_l0, 
-             mw2_l0),
-                  custom.model.names = 
-          c("Model 1 (Black)", 
-            "Model 1 (White)", 
-            "Model 2 (Black)", 
-            "Model 2 (White)"),
-                  custom.coef.names = c("Efficiency Gap", "Proportion Republican: Last Redistricting", "Top 10%'s Share of Income", "Median Income", "Proportion Republican: Current"),
-                  include.adjrs = F,
-                  custom.gof.rows = list( 
-                                         "AIC" = c("2,412.4",
-                                                   "815.4",
-                                                   "2,413.5",
-                                                   "817.4"),
-                                         "BIC" = c("2,663.0", 
-                                                   "1,066.0", 
-                                                   "2,668.6", 
-                                                   "1,072.5")),
-                  reorder.gof = (c(3,4,5,1,2,6,7)),
-        single.row = T,
-        file = "tables/mainresults_lag0.docx")
+bic_lag0 <- list(mb1_l0, mw1_l0, mt1_l0, mb2_l0, mw2_l0, mt2_l0) |> 
+  map(~fitstat(.x, type = "bic", verbose = F)) |> 
+  tibble() |> 
+  unnest_wider(1)
 
-list(mb1_l1, mw1_l1, mb2_l1, mw2_l1) |> 
-  map(~fitstat(.x, type = "aic"))
-  
-list(mb1_l1, mw1_l1, mb2_l1, mw2_l1) |> 
-  map(~fitstat(.x, type = "bic"))
+texreg::wordreg(list(mb1_l0, mw1_l0, mt1_l0, mb2_l0, mw2_l0, mt2_l0),
+                custom.model.names = 
+                  c("Model 1 (Black)", 
+                    "Model 1 (White)",
+                    "Model 1 (Total)",
+                    "Model 2 (Black)", 
+                    "Model 2 (White)",
+                    "Model 2 (Total)"),
+                custom.coef.names = c("Efficiency Gap", "Proportion Republican: Last Redistricting", "Top 10%'s Share of Income", "Median Income", "Proportion Republican: Current"),
+                include.adjrs = F,
+                custom.gof.rows = list( 
+                  "AIC" = aic_lag0$aic,
+                  "BIC" = bic_lag0$bic),
+                reorder.gof = (c(3,4,5,1,2,6,7)),
+                single.row = T,
+                file = "tables_figs/suppresultstable_lag0.docx")
+```
 
-wordreg(list(mb1_l1, 
-             mw1_l1, 
-             mb2_l1, 
-             mw2_l1),
-                  custom.model.names = 
-          c("Model 1 (Black)", 
-            "Model 1 (White)", 
-            "Model 2 (Black)", 
-            "Model 2 (White)"),
-                  custom.coef.names = c("Efficiency Gap", "Proportion Republican: Last Redistricting", "Top 10%'s Share of Income", "Median Income", "Proportion Republican: Current"),
-                  include.adjrs = F,
-                  custom.gof.rows = list( 
-                                         "AIC" = c("2,404.7",
-                                                   "818.2",
-                                                   "2,406.1",
-                                                   "819.8"),
-                                         "BIC" = c("2,655.2", 
-                                                   "1,068.7", 
-                                                   "2,661.1", 
-                                                   "1,074.8")),
-                  reorder.gof = (c(3,4,5,1,2,6,7)),
-        single.row = T,
-        file = "tables/mainresults_lag1.docx")
+```{r}
+aic_lag1 <- list(mb1_l1, mw1_l1, mt1_l1, mb2_l1, mw2_l1, mt2_l1) |> 
+  map(~fitstat(.x, type = "aic", verbose = F)) |> 
+  tibble() |> 
+  unnest_wider(1)
 
+bic_lag1 <- list(mb1_l1, mw1_l1, mt1_l1, mb2_l1, mw2_l1, mt2_l1) |> 
+  map(~fitstat(.x, type = "bic", verbose = F)) |> 
+  tibble() |> 
+  unnest_wider(1)
 
-list(mb1_l2, mw1_l2, mb2_l2, mw2_l2) |> 
-  map(~fitstat(.x, type = "aic"))
-  
-list(mb1_l2, mw1_l2, mb2_l2, mw2_l2) |> 
-  map(~fitstat(.x, type = "bic"))
+texreg::wordreg(list(mb1_l1, mw1_l1, mt1_l1, mb2_l1, mw2_l1, mt2_l1),
+                custom.model.names = 
+                  c("Model 1 (Black)", 
+                    "Model 1 (White)",
+                    "Model 1 (Total)",
+                    "Model 2 (Black)", 
+                    "Model 2 (White)",
+                    "Model 2 (Total)"),
+                custom.coef.names = c("Efficiency Gap", "Proportion Republican: Last Redistricting", "Top 10%'s Share of Income", "Median Income", "Proportion Republican: Current"),
+                include.adjrs = F,
+                custom.gof.rows = list( 
+                  "AIC" = aic_lag1$aic,
+                  "BIC" = bic_lag1$bic),
+                reorder.gof = (c(3,4,5,1,2,6,7)),
+                single.row = T,
+                file = "tables_figs/suppresultstable_lag1.docx")
+```
 
-wordreg(list(mb1_l2, 
-             mw1_l2, 
-             mb2_l2, 
-             mw2_l2),
-                  custom.model.names = 
-          c("Model 1 (Black)", 
-            "Model 1 (White)", 
-            "Model 2 (Black)", 
-            "Model 2 (White)"),
-                  custom.coef.names = c("Efficiency Gap", "Proportion Republican: Last Redistricting", "Top 10%'s Share of Income", "Median Income", "Proportion Republican: Current"),
-                  include.adjrs = F,
-                  custom.gof.rows = list( 
-                                         "AIC" = c("2,369.0",
-                                                   "816.2",
-                                                   "2,371.0",
-                                                   "816.2"),
-                                         "BIC" = c("2,619.0", 
-                                                   "1,066.2", 
-                                                   "2,625.4", 
-                                                   "1,070.7")),
-                  reorder.gof = (c(3,4,5,1,2,6,7)),
-        single.row = T,
-        file = "tables/mainresults_lag2.docx")
+```{r}
+aic_lag2 <- list(mb1_l2, mw1_l2, mt1_l2, mb2_l2, mw2_l2, mt2_l2) |> 
+  map(~fitstat(.x, type = "aic", verbose = F)) |> 
+  tibble() |> 
+  unnest_wider(1)
 
+bic_lag2 <- list(mb1_l2, mw1_l2, mt1_l2, mb2_l2, mw2_l2, mt2_l2) |> 
+  map(~fitstat(.x, type = "bic", verbose = F)) |> 
+  tibble() |> 
+  unnest_wider(1)
+
+texreg::wordreg(list(mb1_l2, mw1_l2, mt1_l2, mb2_l2, mw2_l2, mt2_l2),
+                custom.model.names = 
+                  c("Model 1 (Black)", 
+                    "Model 1 (White)",
+                    "Model 1 (Total)",
+                    "Model 2 (Black)", 
+                    "Model 2 (White)",
+                    "Model 2 (Total)"),
+                custom.coef.names = c("Efficiency Gap", "Proportion Republican: Last Redistricting", "Top 10%'s Share of Income", "Median Income", "Proportion Republican: Current"),
+                include.adjrs = F,
+                custom.gof.rows = list( 
+                  "AIC" = aic_lag2$aic,
+                  "BIC" = bic_lag2$bic),
+                reorder.gof = (c(3,4,5,1,2,6,7)),
+                single.row = T,
+                file = "tables_figs/suppresultstable_lag2.docx")
 ```
 
 # Supplemental Analyses
@@ -342,5 +364,5 @@ mw4_l3 <- feols(imr_w ~ eg_abs_z + prop_rep_planwriters_z + top10share_z + inc_z
 ```
 
 ```{r}
-save(mb1_l3, mw1_l3, mb2_l3, mw2_l3, file = here("data", "mainmodels.Rdata"))
+save(mb1_l3, mw1_l3, mt1_l3, mb2_l3, mw2_l3, mt2_l3, file = here("data", "mainmodels.Rdata"))
 ```

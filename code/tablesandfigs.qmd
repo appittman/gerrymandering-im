@@ -13,7 +13,7 @@ library(colorspace)
 library(broom)
 library(patchwork)
 load(here("data", "mainmodels.Rdata"))
-load(here("data", "d_020626.Rdata"))
+load(here("data", "df_aug2026.Rdata"))
 load(here("data", "visdata.Rdata"))
 load(here("data", "preds_covs.Rdata"))
 ```
@@ -25,11 +25,12 @@ load(here("data", "preds_covs.Rdata"))
 tbl_2018 <- lag3 |>
   drop_na() |> 
   filter(year == 2018) |> 
-  tbl_summary(include = c(imr_w, imr_b, eg,
+  tbl_summary(include = c(imr_w, imr_b, imr_t, eg,
                                      prop_rep_planwriters, prop_rep, 
                                      inc, top10share),
               label = list(imr_w = "Infant Mortality Rate (White)",
                            imr_b = "Infant Mortality Rate (Black)",
+                           imr_t = "Infant Mortality Rate (Total)",
                            eg = "Efficiency Gap Score",
                            prop_rep_planwriters = "Proportion Republican: Last Redistricting",
                            prop_rep = "Proportion Republican: Current",
@@ -43,11 +44,12 @@ tbl_2018 <- lag3 |>
 tbl_1995 <- lag3 |> 
   drop_na() |> 
   filter(year == 1995) |> 
-  tbl_summary(include = c(imr_w, imr_b, eg,
+  tbl_summary(include = c(imr_w, imr_b, imr_t, eg,
                                      prop_rep_planwriters, prop_rep, 
                                      inc, top10share),
               label = list(imr_w = "Infant Mortality Rate (White)",
                            imr_b = "Infant Mortality Rate (Black)",
+                           imr_t = "Infant Mortality Rate (Total)",
                            eg = "Efficiency Gap Score",
                            prop_rep_planwriters = "Proportion Republican: Last Redistricting",
                            prop_rep = "Proportion Republican: Current",
@@ -60,11 +62,12 @@ tbl_1995 <- lag3 |>
 
 tbl_full <- lag3 |> 
   drop_na() |> 
-  tbl_summary(include = c(imr_w, imr_b, eg,
+  tbl_summary(include = c(imr_w, imr_b, imr_t, eg,
                                      prop_rep_planwriters, prop_rep, 
                                      inc, top10share),
               label = list(imr_w = "Infant Mortality Rate (White)",
                            imr_b = "Infant Mortality Rate (Black)",
+                           imr_t = "Infant Mortality Rate (Total)",
                            eg = "Efficiency Gap Score",
                            prop_rep_planwriters = "Proportion Republican: Last Redistricting",
                            prop_rep = "Proportion Republican: Current",
@@ -80,6 +83,7 @@ tbl_sample <- tbl_merge(tbls = list(tbl_full, tbl_1995, tbl_2018),
 
 
 
+tbl_sample
 ```
 
 ```{r}
@@ -287,6 +291,8 @@ coefb2 <- tidy(mb2_l3) |>
   select(term, est = estimate, se = std.error) |> 
   mutate(model = 2,
          race = "b")
+
+
 #################################
 coefw1 <- tidy(mw1_l3) |> 
   filter(str_detect(term, "eg|prop")) |> 
@@ -301,7 +307,22 @@ coefw2 <- tidy(mw2_l3) |>
          race = "w")
 
 
-coefs <- bind_rows(coefb1, coefb2, coefw1, coefw2)
+###################################
+coeft1 <- tidy(mt1_l3) |> 
+  filter(str_detect(term, "eg|prop")) |> 
+  select(term, est = estimate, se = std.error) |> 
+  mutate(model = 1,
+         race = "t")
+
+coeft2 <- tidy(mt2_l3) |> 
+  filter(str_detect(term, "eg|prop")) |> 
+  select(term, est = estimate, se = std.error) |> 
+  mutate(model = 2,
+         race = "t")
+
+
+coefs <- bind_rows(coefb1, coefb2, coefw1, coefw2,
+                   coeft1, coeft2)
 
 ```
 
@@ -313,7 +334,7 @@ coefplot_b <- coefs |>
          model = case_match(model,
                             1 ~ "Model 1",
                             2 ~ "Model 2"),
-         race = fct(race, levels = c("b", "w"))) |> 
+         race = fct(race, levels = c("b", "w", "t"))) |> 
   ggplot(aes(y = term)) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   geom_point(aes(x = est, color = race)) +
@@ -334,7 +355,7 @@ coefplot_w <- coefs |>
          model = case_match(model,
                             1 ~ "Model 1",
                             2 ~ "Model 2"),
-         race = fct(race, levels = c("b", "w"))) |> 
+         race = fct(race, levels = c("b", "w", "t"))) |> 
   ggplot(aes(y = term)) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   geom_point(aes(x = est, color = race)) +
@@ -349,19 +370,43 @@ coefplot_w <- coefs |>
        color = "") +
   theme(legend.position = "none")
 
+coefplot_t <- coefs |> 
+  filter(race == "t") |> 
+  mutate(term = fct_relevel(term, "prop_rep_z", "prop_rep_planwriters_z", "eg_z"),
+         model = case_match(model,
+                            1 ~ "Model 1",
+                            2 ~ "Model 2"),
+         race = fct(race, levels = c("b", "w", "t"))) |> 
+  ggplot(aes(y = term)) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_point(aes(x = est, color = race)) +
+  geom_segment(aes(x = est + 1.96*se, xend = est - 1.96*se, color = race)) +
+  scale_color_manual(values = c("purple3")) +
+  facet_wrap("model") +
+  xlim(-.6, .9) +
+  scale_y_discrete(labels = c("Proportion Republican:\nCurrent", "Proportion Republican:\nLast Redistricting", "Efficiency Gap")) +
+  theme_minimal() +
+  labs(x = "Estimates and 95% Confidence Intervals",
+       y = "Variable",
+       color = "") +
+  theme(legend.position = "none")
+
 coefplot <- coefplot_b +
   coefplot_w +
+  coefplot_t +
   plot_layout(ncol = 1,
               axes = "collect") +
-  plot_annotation(tag_levels = list(c("Non-Hispanic Black", "Non-Hispanic White"))) &
+  plot_annotation(tag_levels = list(c("Non-Hispanic Black", "Non-Hispanic White", "Total"))) &
                   theme(plot.tag.position = "right",
                         plot.tag = element_text(angle = -90, size = 10))
 
+coefplot
+
 ggsave(coefplot,
-       filename = here("figures", "coef_plot.png"),
+       filename = here("tables_figs", "coef_plot.png"),
        dpi = 300,
-       width = 1080,
-       height = 800,
+       width = 800,
+       height = 1080,
        units = "px",
        scale = 2)
 ```
