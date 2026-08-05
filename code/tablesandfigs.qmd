@@ -12,10 +12,12 @@ library(gtsummary)
 library(colorspace)
 library(broom)
 library(patchwork)
+library(sf)
 load(here("data", "mainmodels.Rdata"))
 load(here("data", "df_aug2026.Rdata"))
 load(here("data", "visdata.Rdata"))
 load(here("data", "preds_covs.Rdata"))
+load(here("data", "states_sf.rda"))
 ```
 
 ```{r}
@@ -409,4 +411,75 @@ ggsave(coefplot,
        height = 1080,
        units = "px",
        scale = 2)
+```
+
+```{r}
+#| label: map of included states
+
+included_states <- lag3 |> 
+  group_by(state) |> 
+  tally() |> 
+  pull(state)
+
+map_data <- tibble(state = state.name,
+       st = state.abb) |> 
+  mutate(include = case_when(st %in% included_states ~ 1,
+                             .default = 0))
+
+statemap <- left_join(states_sf, map_data, by = c("state", "st"))
+
+
+statemap |> 
+  ggplot() +
+  geom_sf(aes(fill = as.factor(include))) +
+  scale_fill_manual(values = c("gray90", "tomato")) +
+  theme_void() +
+  theme(legend.position = "none")
+
+```
+
+```{r}
+#| label: alt charts for presentation
+
+coefs |> 
+  filter(model == 1) |> 
+  mutate(term = fct_relevel(term, "prop_rep_planwriters_z", "eg_z"),
+         race = factor(race, levels = c("b", "w", "t"),
+                    labels = c("NH Black",
+                               "NH White",
+                               "Total"))) |> 
+  ggplot(aes(y = term)) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_point(aes(x = est, color = race)) +
+  geom_segment(aes(x = est + 1.96*se, xend = est - 1.96*se, color = race)) +
+  scale_color_manual(labels = c("Black", "White", "Total"), values = c("tomato", "turquoise3", "purple3")) +
+  xlim(-.6, .9) +
+  facet_wrap("race") +
+  scale_y_discrete(labels = c("Proportion Republican:\nLast Redistricting", "Efficiency Gap")) +
+  theme_minimal() +
+  labs(x = "Estimates and 95% Confidence Intervals",
+       y = "Variable",
+       color = "") +
+  theme(legend.position = "none")
+
+coefs |> 
+  filter(model == 2) |> 
+  mutate(term = fct_relevel(term, "prop_rep_z", "prop_rep_planwriters_z", "eg_z"),
+         race = factor(race, levels = c("b", "w", "t"),
+                       labels = c("NH Black",
+                                  "NH White",
+                                  "Total"))) |> 
+  ggplot(aes(y = term)) +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  geom_point(aes(x = est, color = race)) +
+  geom_segment(aes(x = est + 1.96*se, xend = est - 1.96*se, color = race)) +
+  scale_color_manual(labels = c("Black", "White", "Total"), values = c("tomato", "turquoise3", "purple3")) +
+  xlim(-.6, .9) +
+  facet_wrap("race") +
+  scale_y_discrete(labels = c("Proportion Republican:\nConcurrent", "Proportion Republican:\nLast Redistricting", "Efficiency Gap")) +
+  theme_minimal() +
+  labs(x = "Estimates and 95% Confidence Intervals",
+       y = "Variable",
+       color = "") +
+  theme(legend.position = "none")
 ```

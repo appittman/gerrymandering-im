@@ -4,7 +4,7 @@
 library(tidyverse)
 library(here)
 
-load(here("data", "visdata.Rdata"))
+load(here("data", "outcome.Rdata"))
 
 dropped_states <- im |> 
   mutate(race = case_match(race,

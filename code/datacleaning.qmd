@@ -342,7 +342,7 @@ outcome <- left_join(outcome_a, outcome_b)
 ```
 
 ```{r}
-save(bias, outcome, file = here("data", "visdata.Rdata"))
+save(bias, outcome, im, file = here("data", "visdata.Rdata"))
 ```
 
 ```{r}
@@ -360,6 +360,8 @@ outcome <- outcome |>
 #in addition to IMR, Nebraska was excluded because it has a unicameral legislature
 #LA, MA, NV, MD had high missingness on gerrymandering data
 #696 possible state-years (29 states, 24 years each)
+
+save(outcome, file = here("data", "outcome.Rdata"))
 
 ```
 
