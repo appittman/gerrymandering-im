@@ -18,6 +18,13 @@ load(here("data", "df_aug2026.Rdata"))
 load(here("data", "visdata.Rdata"))
 load(here("data", "preds_covs.Rdata"))
 load(here("data", "states_sf.rda"))
+load(here("data", "im_t.Rdata"))
+load(here("data", "partisan.Rdata"))
+
+
+st <- tibble(tidycensus::fips_codes) |> 
+  select(state, state_name) |> 
+  unique()
 ```
 
 ```{r}
@@ -88,20 +95,53 @@ tbl_sample <- tbl_merge(tbls = list(tbl_full, tbl_1995, tbl_2018),
 tbl_sample
 ```
 
+creating a full US dataset; want maximum data here so going back to more raw component datasets before i dropped a bunch
+
+```{r}
+preds_full <- bias |> 
+  select(state, year, planyear, eg) |> 
+  left_join(partisan, by = c("state", "planyear" = "year")) |> 
+  rename(prop_rep_planwriters = prop_rep) |> 
+  mutate(lagyear = year + 3)
+
+outcome_full <- im |> 
+  mutate(race = recode_values(race, "Non-Hispanic White" ~ "w",
+                              "Non-Hispanic Black" ~ "b")) |> bind_rows(im_t) |> 
+  mutate(imr = 1000 * deaths / births) |> 
+  drop_na(year) |> 
+  select(state, year, race, imr) |> 
+  pivot_wider(id_cols = c(state, year),
+              names_from = "race",
+              names_prefix = "imr_",
+              values_from = "imr") |> 
+  rename(state_name = state) |> 
+  left_join(st) |> 
+  select(state, year, starts_with("imr")) |> 
+  filter(year %in% c(1995:2018)) |> 
+  filter(state != "DC")
+
+
+us_full <- outcome_full |> 
+  left_join(covs, by = c("state", "year")) |> 
+  select(-ends_with("z")) |> 
+  left_join(preds_full, by = c("state", "year" = "lagyear"))
+```
+
 ```{r}
 #| label: desc table: full US
-us_full <- left_join(preds, covs, by = c("state", "year")) |> 
-  select(c(state, year, eg, prop_rep_planwriters, 
-           prop_rep, top10share, inc)) |> 
-  filter(year %in% c(1995:2018))
 
 us_1995 <- us_full |> filter(year == 1995)
 us_2018 <- us_full |> filter(year == 2018)
 
 tbl_95 <- us_1995 |> 
-  tbl_summary(include = c(eg:inc),
+  tbl_summary(include = c(imr_w, imr_b, imr_t, eg,
+                          prop_rep_planwriters, prop_rep,
+                          inc, top10share),
               missing = "no",
-              label = list(eg = "Efficiency Gap Score",
+              label = list(imr_w = "Infant Mortality Rate (White)",
+                           imr_b = "Infant Mortality Rate (Black)",
+                           imr_t = "Infant Mortality Rate (Total)",
+                           eg = "Efficiency Gap Score",
                            prop_rep_planwriters = "Proportion Republican: Last Redistricting",
                            prop_rep = "Proportion Republican: Current",
                            inc = "Median Income",
@@ -112,9 +152,14 @@ tbl_95 <- us_1995 |>
   modify_footnote(all_stat_cols() ~ NA)
 
 tbl_18 <- us_2018 |> 
-  tbl_summary(include = c(eg:inc),
+  tbl_summary(include = c(imr_w, imr_b, imr_t, eg,
+                          prop_rep_planwriters, prop_rep,
+                          inc, top10share),
               missing = "no",
-              label = list(eg = "Efficiency Gap Score",
+              label = list(imr_w = "Infant Mortality Rate (White)",
+                           imr_b = "Infant Mortality Rate (Black)",
+                           imr_t = "Infant Mortality Rate (Total)",
+                           eg = "Efficiency Gap Score",
                            prop_rep_planwriters = "Proportion Republican: Last Redistricting",
                            prop_rep = "Proportion Republican: Current",
                            inc = "Median Income",
@@ -125,9 +170,14 @@ tbl_18 <- us_2018 |>
   modify_footnote(all_stat_cols() ~ NA)
 
 tbl_f <- us_full |> 
-  tbl_summary(include = c(eg:inc),
+  tbl_summary(include = c(imr_w, imr_b, imr_t, eg,
+                          prop_rep_planwriters, prop_rep,
+                          inc, top10share),
               missing = "no",
-              label = list(eg = "Efficiency Gap Score",
+              label = list(imr_w = "Infant Mortality Rate (White)",
+                           imr_b = "Infant Mortality Rate (Black)",
+                           imr_t = "Infant Mortality Rate (Total)",
+                           eg = "Efficiency Gap Score",
                            prop_rep_planwriters = "Proportion Republican: Last Redistricting",
                            prop_rep = "Proportion Republican: Current",
                            inc = "Median Income",
@@ -140,38 +190,20 @@ tbl_f <- us_full |>
 tbl_us <- tbl_merge(tbls = list(tbl_f, tbl_95, tbl_18),
           tab_spanner = FALSE)
 
-tbl_merge(tbls = list(tbl_sample, tbl_us),
-          tab_spanner = c("Sample", "United States")) |> 
-  as_gt() |> 
-  gt::gtsave(filename = here("tables", "desctable.docx"))
+
+
+
+
 
 ```
 
+Big table
+
 ```{r}
-#| label: full us imr
-
-im |> 
-  filter(year == 1995) |> 
-  mutate(imr = 1000 * deaths / births) |> 
-  group_by(race) |> 
-  summarize(mean = mean(imr, na.rm = T),
-            sd = sd(imr, na.rm = T)) |> 
-  pull(mean, sd)
-
-im |> 
-  filter(year == 2018) |> 
-  mutate(imr = 1000 * deaths / births) |> 
-  group_by(race) |> 
-  summarize(mean = mean(imr, na.rm = T),
-            sd = sd(imr, na.rm = T)) |> 
-  pull(mean, sd)
-
-im |> 
-  mutate(imr = 1000 * deaths / births) |> 
-  group_by(race) |> 
-  summarize(mean = mean(imr, na.rm = T),
-            sd = sd(imr, na.rm = T)) |> 
-  pull(mean, sd)
+tbl_merge(list(tbl_sample, tbl_us),
+          tab_spanner = c("Sample", "Full United States")) |> 
+  as_flex_table() |> 
+  flextable::save_as_docx(path = here("tables_figs", "desctable.docx"))
 ```
 
 ```{r}
