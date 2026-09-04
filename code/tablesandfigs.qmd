@@ -261,6 +261,8 @@ ggsave(imr_plot,
        scale = 2)
 ```
 
+Efficiency Gap Visualization
+
 ```{r}
 eg_start <- bias |> 
   filter(state %in% included_states) |> 
@@ -312,6 +314,8 @@ ggsave(eg_plot,
        scale = 2)
 
 ```
+
+Coefficient Plots
 
 ```{r}
 coefb1 <- tidy(mb1_l3) |> 
